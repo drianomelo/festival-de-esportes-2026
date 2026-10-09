@@ -1,7 +1,7 @@
 {
   "edicao": "2026",
   "cidade": "Nossa Senhora da Glória, SE",
-  "atualizadoEm": "2026-10-09T13:43:00-03:00",
+  "atualizadoEm": "2026-10-09T13:46:00-03:00",
   "esportes": [
     {
       "id": "volei",
@@ -10,6 +10,7 @@
         {
           "id": "v-lonney-tunes",
           "categoria": "masculino",
+          "grupo": "Único",
           "nome": "Lonney Tunes",
           "nomeTabela": "Looney",
           "jogadores": [
@@ -23,6 +24,7 @@
         {
           "id": "v-sand-volei",
           "categoria": "masculino",
+          "grupo": "Único",
           "nome": "Sand Volei",
           "nomeTabela": "Sand Vôlei",
           "jogadores": [
@@ -37,6 +39,7 @@
         {
           "id": "v-wendell",
           "categoria": "masculino",
+          "grupo": "Único",
           "nome": "Time de Wendell",
           "nomeTabela": "Equipe Wendell",
           "jogadores": [
@@ -51,6 +54,7 @@
         {
           "id": "v-carcara-gloria",
           "categoria": "masculino",
+          "grupo": "Único",
           "nome": "Carcará Glória",
           "nomeTabela": "Carcará Vôlei",
           "jogadores": [
@@ -63,13 +67,43 @@
         {
           "id": "v-mestre-sacada-a",
           "categoria": "feminino",
+          "grupo": "A",
           "nome": "Mestre da Sacada A",
           "jogadores": []
         },
         {
           "id": "v-volei-futuro-a",
           "categoria": "feminino",
+          "grupo": "A",
           "nome": "Volei Futuro A",
+          "jogadores": []
+        },
+        {
+          "id": "v-volei-gloria-a",
+          "categoria": "feminino",
+          "grupo": "A",
+          "nome": "Volei gloria A",
+          "jogadores": []
+        },
+        {
+          "id": "v-mestre-sacada-b",
+          "categoria": "feminino",
+          "grupo": "B",
+          "nome": "Mestre da Sacada B",
+          "jogadores": []
+        },
+        {
+          "id": "v-volei-futuro-b",
+          "categoria": "feminino",
+          "grupo": "B",
+          "nome": "Volei Futuro B",
+          "jogadores": []
+        },
+        {
+          "id": "v-volei-gloria-b",
+          "categoria": "feminino",
+          "grupo": "B",
+          "nome": "Volei gloria B",
           "jogadores": []
         }
       ],
@@ -78,7 +112,7 @@
           "id": "v-2026-10-09-1",
           "numero": 1,
           "categoria": "feminino",
-          "fase": "a_definir",
+          "fase": "grupos",
           "data": "2026-10-09",
           "horario": "20:00",
           "local": "Praça da Juventude",
@@ -92,7 +126,7 @@
           "id": "v-2026-10-09-2",
           "numero": 2,
           "categoria": "masculino",
-          "fase": "a_definir",
+          "fase": "grupos",
           "data": "2026-10-09",
           "horario": "20:30",
           "local": "Praça da Juventude",
@@ -106,7 +140,7 @@
           "id": "v-2026-10-09-3",
           "numero": 3,
           "categoria": "masculino",
-          "fase": "a_definir",
+          "fase": "grupos",
           "data": "2026-10-09",
           "horario": "21:00",
           "local": "Praça da Juventude",
@@ -125,6 +159,7 @@
         {
           "id": "b-guilherme",
           "categoria": "masculino",
+          "grupo": "Único",
           "nome": "Time Guilherme",
           "jogadores": [
             { "id": "b-guilherme-1", "nome": "Guilherme" },
@@ -135,6 +170,7 @@
         {
           "id": "b-kauan",
           "categoria": "masculino",
+          "grupo": "Único",
           "nome": "Time Kauan",
           "jogadores": [
             { "id": "b-kauan-1", "nome": "Kauan" },
@@ -145,6 +181,7 @@
         {
           "id": "b-charlys",
           "categoria": "masculino",
+          "grupo": "Único",
           "nome": "Time Charlys",
           "jogadores": [
             { "id": "b-charlys-1", "nome": "Charlys" },
@@ -155,6 +192,7 @@
         {
           "id": "b-luiz",
           "categoria": "masculino",
+          "grupo": "Único",
           "nome": "Time Luiz",
           "jogadores": [
             { "id": "b-luiz-1", "nome": "Luiz" },
@@ -165,6 +203,7 @@
         {
           "id": "b-adriano",
           "categoria": "masculino",
+          "grupo": "Único",
           "nome": "Time Adriano",
           "jogadores": [
             { "id": "b-adriano-1", "nome": "Vyctor" },
@@ -175,6 +214,7 @@
         {
           "id": "b-izael",
           "categoria": "masculino",
+          "grupo": "Único",
           "nome": "Time Izael",
           "jogadores": [
             { "id": "b-izael-1", "nome": "Izael" },
@@ -189,7 +229,7 @@
           "numero": 1,
           "rodada": "R1",
           "categoria": "masculino",
-          "fase": "a_definir",
+          "fase": "grupos",
           "data": "2026-10-09",
           "horario": "19:00",
           "local": "Praça da Juventude",
@@ -204,7 +244,7 @@
           "numero": 2,
           "rodada": "R4",
           "categoria": "masculino",
-          "fase": "a_definir",
+          "fase": "grupos",
           "data": "2026-10-09",
           "horario": "19:20",
           "local": "Praça da Juventude",
@@ -219,7 +259,7 @@
           "numero": 3,
           "rodada": "R3",
           "categoria": "masculino",
-          "fase": "a_definir",
+          "fase": "grupos",
           "data": "2026-10-09",
           "horario": "19:40",
           "local": "Praça da Juventude",

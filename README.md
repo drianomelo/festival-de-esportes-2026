@@ -2,7 +2,7 @@
 
 Site estático para publicar a programação e os resultados de vôlei feminino e masculino e basquete 3x3 masculino. Não usa banco de dados, servidor ou etapa de build.
 
-O campeonato começa em 9 de outubro de 2026. Os seis jogos de hoje já estão cadastrados na programação. Os elencos dos dois times de vôlei feminino, os grupos e os resultados ainda não foram informados.
+O campeonato começa em 9 de outubro de 2026. Os seis jogos de hoje já estão cadastrados na programação. As seis equipes femininas de vôlei estão divididas nos grupos A e B. O vôlei masculino e o basquete 3x3 têm um Grupo Único cada. Os elencos femininos e os resultados ainda não foram informados.
 
 ## Publicar na Vercel
 
@@ -14,7 +14,7 @@ Para testar no computador, sirva a pasta com um servidor local, por exemplo `pyt
 
 ## Atualizar os dados
 
-Edite [data/resultados.json](data/resultados.json). Complete os elencos femininos, os grupos e os resultados quando forem confirmados. Atualize também `atualizadoEm` com data, hora e fuso, por exemplo `"2026-10-09T13:39:00-03:00"`. Esse campo aparece no aviso de atualização do site. O arquivo `logo.png` da raiz é usado no cabeçalho e como ícone da aba.
+Edite [data/resultados.json](data/resultados.json). Complete os elencos femininos e os resultados quando forem confirmados. Atualize também `atualizadoEm` com data, hora e fuso, por exemplo `"2026-10-09T13:46:00-03:00"`. Esse campo aparece no aviso de atualização do site. O arquivo `logo.png` da raiz é usado no cabeçalho e como ícone da aba.
 
 - Cada modalidade fica em `esportes`. Use `id: "volei"` ou `id: "basquete"`.
 - Em `times`, cada equipe precisa de um `id` único, `nome`, `categoria` (`"feminino"` ou `"masculino"`) e uma lista `jogadores`. `nomeTabela` é opcional para o nome abreviado usado na programação. O campo `grupo` (por exemplo, `"A"`) pode ser adicionado quando os grupos forem definidos; ele será obrigatório para jogos da fase de grupos. Cada atleta precisa de `id` único e `nome`; `numero` é opcional.
