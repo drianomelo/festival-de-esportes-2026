@@ -1,0 +1,111 @@
+{
+  "edicao": "2026",
+  "cidade": "Nossa Senhora da Glória, SE",
+  "atualizadoEm": "2026-10-09T13:20:00-03:00",
+  "esportes": [
+    {
+      "id": "volei",
+      "nome": "Vôlei",
+      "times": [
+        { "id": "v-azul", "categoria": "feminino", "grupo": "A", "nome": "Azul (exemplo)", "jogadores": [
+          { "id": "va-1", "numero": 4, "nome": "Ana Souza" },
+          { "id": "va-2", "numero": 7, "nome": "Beatriz Lima" },
+          { "id": "va-3", "numero": 9, "nome": "Carla Oliveira" },
+          { "id": "va-4", "numero": 11, "nome": "Daniela Santos" },
+          { "id": "va-5", "numero": 14, "nome": "Elisa Rocha" },
+          { "id": "va-6", "numero": 18, "nome": "Fernanda Alves" }
+        ]},
+        { "id": "v-verde", "categoria": "feminino", "grupo": "A", "nome": "Verde (exemplo)", "jogadores": [
+          { "id": "vv-1", "numero": 2, "nome": "Gabriela Costa" },
+          { "id": "vv-2", "numero": 5, "nome": "Helena Ferreira" },
+          { "id": "vv-3", "numero": 8, "nome": "Isabela Martins" },
+          { "id": "vv-4", "numero": 10, "nome": "Júlia Ribeiro" },
+          { "id": "vv-5", "numero": 13, "nome": "Larissa Gomes" },
+          { "id": "vv-6", "numero": 16, "nome": "Mariana Pereira" }
+        ]},
+        { "id": "v-amarelo", "categoria": "masculino", "grupo": "A", "nome": "Amarelo (exemplo)", "jogadores": [
+          { "id": "vm-1", "numero": 3, "nome": "André Carvalho" },
+          { "id": "vm-2", "numero": 6, "nome": "Bruno Nunes" },
+          { "id": "vm-3", "numero": 12, "nome": "Caio Mendes" },
+          { "id": "vm-4", "numero": 15, "nome": "Daniel Rocha" },
+          { "id": "vm-5", "numero": 18, "nome": "Eduardo Silva" },
+          { "id": "vm-6", "numero": 21, "nome": "Felipe Costa" }
+        ]},
+        { "id": "v-vermelho", "categoria": "masculino", "grupo": "A", "nome": "Vermelho (exemplo)", "jogadores": [
+          { "id": "vr-1", "numero": 1, "nome": "Gabriel Barros" },
+          { "id": "vr-2", "numero": 15, "nome": "Henrique Araújo" },
+          { "id": "vr-3", "numero": 17, "nome": "Igor Silva" },
+          { "id": "vr-4", "numero": 20, "nome": "João Lima" },
+          { "id": "vr-5", "numero": 22, "nome": "Lucas Souza" },
+          { "id": "vr-6", "numero": 24, "nome": "Mateus Ferreira" }
+        ]}
+      ],
+      "partidas": [
+        { "id": "v-001", "categoria": "feminino", "fase": "grupos", "data": "2026-10-08", "horario": "16:00", "local": "Ginásio Municipal", "status": "encerrada", "mandante": "v-azul", "visitante": "v-verde", "periodos": [
+          { "nome": "1º set", "mandante": 25, "visitante": 21 },
+          { "nome": "2º set", "mandante": 25, "visitante": 23 },
+          { "nome": "3º set", "mandante": 22, "visitante": 25 },
+          { "nome": "4º set", "mandante": 25, "visitante": 19 }
+        ], "pontosClassificacao": { "mandante": 3, "visitante": 0 }, "pontosAtletas": [
+          { "atletaId": "va-1", "pontos": 18, "estatisticas": { "aces": 3, "bloqueios": 2 } }, { "atletaId": "va-2", "pontos": 15, "estatisticas": { "aces": 1 } },
+          { "atletaId": "va-3", "pontos": 13 }, { "atletaId": "va-4", "pontos": 11 },
+          { "atletaId": "va-5", "pontos": 8 }, { "atletaId": "va-6", "pontos": 5 },
+          { "atletaId": "vv-1", "pontos": 16 }, { "atletaId": "vv-2", "pontos": 13 },
+          { "atletaId": "vv-3", "pontos": 11 }, { "atletaId": "vv-4", "pontos": 9 },
+          { "atletaId": "vv-5", "pontos": 7 }, { "atletaId": "vv-6", "pontos": 5 }
+        ]},
+        { "id": "v-002", "categoria": "masculino", "fase": "grupos", "data": "2026-10-12", "horario": "15:00", "local": "Ginásio Municipal", "status": "agendada", "mandante": "v-amarelo", "visitante": "v-vermelho", "periodos": [], "pontosAtletas": [] },
+        { "id": "v-003", "categoria": "masculino", "fase": "grupos", "data": "2026-10-07", "horario": "16:00", "local": "Ginásio Municipal", "status": "encerrada", "mandante": "v-amarelo", "visitante": "v-vermelho", "periodos": [
+          { "nome": "1º set", "mandante": 25, "visitante": 20 },
+          { "nome": "2º set", "mandante": 23, "visitante": 25 },
+          { "nome": "3º set", "mandante": 25, "visitante": 22 },
+          { "nome": "4º set", "mandante": 25, "visitante": 21 }
+        ], "pontosClassificacao": { "mandante": 3, "visitante": 0 }, "pontosAtletas": [
+          { "atletaId": "vm-1", "pontos": 18, "estatisticas": { "aces": 2, "bloqueios": 1 } }, { "atletaId": "vm-2", "pontos": 16 },
+          { "atletaId": "vm-3", "pontos": 13 }, { "atletaId": "vm-4", "pontos": 9 },
+          { "atletaId": "vm-5", "pontos": 7 }, { "atletaId": "vm-6", "pontos": 5 },
+          { "atletaId": "vr-1", "pontos": 17 }, { "atletaId": "vr-2", "pontos": 14 },
+          { "atletaId": "vr-3", "pontos": 11 }, { "atletaId": "vr-4", "pontos": 9 },
+          { "atletaId": "vr-5", "pontos": 6 }, { "atletaId": "vr-6", "pontos": 4 }
+        ] }
+      ]
+    },
+    {
+      "id": "basquete",
+      "nome": "Basquete 3x3",
+      "times": [
+        { "id": "b-azul", "categoria": "masculino", "grupo": "A", "nome": "Azul (exemplo)", "jogadores": [
+          { "id": "ba-1", "numero": 4, "nome": "André Santos" },
+          { "id": "ba-2", "numero": 7, "nome": "Bruno Oliveira" },
+          { "id": "ba-3", "numero": 10, "nome": "Caio Almeida" }
+        ]},
+        { "id": "b-verde", "categoria": "masculino", "grupo": "A", "nome": "Verde (exemplo)", "jogadores": [
+          { "id": "bv-1", "numero": 5, "nome": "Felipe Ribeiro" },
+          { "id": "bv-2", "numero": 8, "nome": "Gabriel Martins" },
+          { "id": "bv-3", "numero": 11, "nome": "Henrique Rocha" }
+        ]},
+        { "id": "b-amarelo", "categoria": "masculino", "grupo": "B", "nome": "Amarelo (exemplo)", "jogadores": [
+          { "id": "bm-1", "numero": 6, "nome": "Lucas Nunes" },
+          { "id": "bm-2", "numero": 9, "nome": "Mateus Barros" },
+          { "id": "bm-3", "numero": 12, "nome": "Nicolas Souza" }
+        ]},
+        { "id": "b-vermelho", "categoria": "masculino", "grupo": "B", "nome": "Vermelho (exemplo)", "jogadores": [
+          { "id": "br-1", "numero": 3, "nome": "Otávio Gomes" },
+          { "id": "br-2", "numero": 15, "nome": "Pedro Silva" },
+          { "id": "br-3", "numero": 18, "nome": "Rafael Carvalho" }
+        ]}
+      ],
+      "partidas": [
+        { "id": "b-001", "categoria": "masculino", "fase": "grupos", "data": "2026-10-08", "horario": "18:00", "local": "Ginásio Municipal", "status": "encerrada", "mandante": "b-azul", "visitante": "b-verde", "periodos": [
+          { "nome": "Jogo único · até 21", "mandante": 21, "visitante": 17 }
+        ], "pontosClassificacao": { "mandante": 2, "visitante": 1 }, "pontosAtletas": [
+          { "atletaId": "ba-1", "pontos": 9, "estatisticas": { "rebotes": 5, "assistencias": 2 } }, { "atletaId": "ba-2", "pontos": 7, "estatisticas": { "rebotes": 3, "assistencias": 4 } },
+          { "atletaId": "ba-3", "pontos": 5 },
+          { "atletaId": "bv-1", "pontos": 8 }, { "atletaId": "bv-2", "pontos": 6 },
+          { "atletaId": "bv-3", "pontos": 3 }
+        ]},
+        { "id": "b-002", "categoria": "masculino", "fase": "grupos", "data": "2026-10-12", "horario": "17:00", "local": "Ginásio Municipal", "status": "agendada", "mandante": "b-amarelo", "visitante": "b-vermelho", "periodos": [], "pontosAtletas": [] }
+      ]
+    }
+  ]
+}

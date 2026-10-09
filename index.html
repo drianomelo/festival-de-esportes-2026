@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#00632A" />
+    <meta
+      name="description"
+      content="Resultados, partidas, equipes e destaques do Festival de Esportes 2026 em Nossa Senhora da Glória, Sergipe."
+    />
+    <title>Festival de Esportes 2026 · Resultados</title>
+    <link rel="icon" href="./logo.png" type="image/jpeg" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <a
+          class="brand"
+          href="#inicio"
+          aria-label="Festival de Esportes 2026, início"
+        >
+          <span class="brand-logo-wrap"
+            ><img
+              class="brand-logo"
+              src="./logo.png"
+              alt="Brasão de Nossa Senhora da Glória"
+          /></span>
+          <span class="brand-copy"
+            ><strong>FESTIVAL DE ESPORTES 2026</strong
+            ><small>Nossa Senhora da Glória · Sergipe</small></span
+          >
+        </a>
+        <span class="header-year">2026</span>
+      </header>
+
+      <main id="inicio">
+        <section class="intro" aria-labelledby="page-title">
+          <div class="intro-copy">
+            <p class="intro-place">
+              Nossa Senhora da Glória, Sergipe
+              <span aria-hidden="true">/</span> Festival de Esportes 2026
+            </p>
+            <h1 id="page-title">O jogo acontece<br /><em>aqui.</em></h1>
+            <p class="intro-description">
+              Acompanhe o vôlei feminino e masculino e o basquete 3x3 masculino:
+              placares, equipes e pontos de cada atleta.
+            </p>
+          </div>
+          <div class="court-art" aria-hidden="true">
+            <div class="court-outline"></div>
+            <div class="court-middle"></div>
+            <div class="court-circle"></div>
+            <div class="court-ball"></div>
+            <span class="court-caption">FESTIVAL<br />2026</span>
+          </div>
+        </section>
+
+        <div
+          id="update-notice"
+          class="update-notice"
+          role="status"
+          hidden
+        ></div>
+
+        <section class="scoreboard-section" aria-labelledby="scoreboard-title">
+          <div class="section-heading">
+            <div>
+              <h2 id="scoreboard-title">Resultados e partidas</h2>
+              <p>
+                Escolha a modalidade e abra uma partida para ver os detalhes.
+              </p>
+            </div>
+            <div class="sport-switch" role="tablist" aria-label="Modalidade">
+              <button
+                id="tab-volei"
+                class="sport-tab is-active"
+                type="button"
+                role="tab"
+                aria-selected="true"
+                aria-controls="sport-panel"
+                data-sport="volei"
+              >
+                Vôlei
+              </button>
+              <button
+                id="tab-basquete"
+                class="sport-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="sport-panel"
+                data-sport="basquete"
+              >
+                Basquete 3x3
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="category-switch"
+            class="category-switch"
+            role="group"
+            aria-label="Categoria do vôlei"
+          >
+            <button
+              id="category-feminino"
+              class="category-tab is-active"
+              type="button"
+              aria-pressed="true"
+              data-category="feminino"
+            >
+              Feminino
+            </button>
+            <button
+              id="category-masculino"
+              class="category-tab"
+              type="button"
+              aria-pressed="false"
+              data-category="masculino"
+            >
+              Masculino
+            </button>
+          </div>
+          <p id="basket-category" class="single-category" hidden>
+            Masculino · jogo único até 21 pontos
+          </p>
+
+          <div
+            id="sport-panel"
+            class="scoreboard-grid"
+            role="tabpanel"
+            aria-labelledby="tab-volei"
+          >
+            <div class="match-column">
+              <div class="column-heading">
+                <h3>Partidas</h3>
+                <span id="match-count"></span>
+              </div>
+              <div id="match-list" class="match-list" aria-live="polite"></div>
+            </div>
+            <div
+              id="match-detail"
+              class="match-detail"
+              aria-live="polite"
+            ></div>
+          </div>
+        </section>
+
+        <section class="stats-section" aria-labelledby="stats-title">
+          <div class="section-heading">
+            <div>
+              <h2 id="stats-title">Estatísticas</h2>
+              <p>
+                Classificação dos grupos e desempenho individual na categoria
+                selecionada.
+              </p>
+            </div>
+          </div>
+          <div class="stats-grid">
+            <div class="stats-panel">
+              <h3>Equipes</h3>
+              <p class="stats-note">
+                Pts = pontos da classificação. Pró e Contra = pontos marcados e
+                sofridos nos jogos de grupo.
+              </p>
+              <div id="team-stats"></div>
+            </div>
+            <div class="stats-panel">
+              <h3>Atletas</h3>
+              <div id="athlete-stats" class="stats-table-wrap"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="teams-section" aria-labelledby="teams-title">
+          <div class="section-heading section-heading--teams">
+            <div>
+              <h2 id="teams-title">Equipes e atletas</h2>
+              <p>Elencos da modalidade selecionada.</p>
+            </div>
+            <span id="team-count" class="team-count"></span>
+          </div>
+          <div id="team-list" class="team-list"></div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <span
+          >Festival de Esportes 2026 <span class="footer-dot">●</span> Nossa
+          Senhora da Glória, SE</span
+        >
+      </footer>
+    </div>
+  </body>
+</html>
