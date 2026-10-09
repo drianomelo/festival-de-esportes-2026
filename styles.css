@@ -643,7 +643,7 @@ h1 em {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  align-items: center;
+  align-items: flex-start;
   border-bottom: 1px solid #b7ba79;
   padding-bottom: 17px;
   margin-bottom: 14px;
@@ -652,6 +652,16 @@ h1 em {
   font-size: 19px;
   letter-spacing: -0.025em;
   margin: 0;
+}
+.team-short-name {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.roster-pending {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
 }
 .roster-count {
   font-size: 12px;
@@ -867,6 +877,13 @@ h1 em {
   background: var(--white);
   border-radius: 16px;
   overflow: hidden;
+}
+.upcoming-summary {
+  margin: 0;
+  padding: 16px 20px;
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 800;
 }
 .upcoming-table-wrap {
   overflow-x: auto;

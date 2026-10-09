@@ -2,7 +2,7 @@
 
 Site estático para publicar a programação e os resultados de vôlei feminino e masculino e basquete 3x3 masculino. Não usa banco de dados, servidor ou etapa de build.
 
-O campeonato começa em 9 de outubro de 2026. Os times de basquete e vôlei masculino já estão cadastrados. O vôlei feminino, os grupos, os confrontos e os resultados aguardam confirmação; a tabela de próximos jogos será preenchida quando a programação real for informada.
+O campeonato começa em 9 de outubro de 2026. Os seis jogos de hoje já estão cadastrados na programação. Os elencos dos dois times de vôlei feminino, os grupos e os resultados ainda não foram informados.
 
 ## Publicar na Vercel
 
@@ -14,11 +14,11 @@ Para testar no computador, sirva a pasta com um servidor local, por exemplo `pyt
 
 ## Atualizar os dados
 
-Edite [data/resultados.json](data/resultados.json). Adicione os times femininos, os grupos e os confrontos quando forem confirmados. Atualize também `atualizadoEm` com data, hora e fuso, por exemplo `"2026-10-09T13:31:00-03:00"`. Esse campo aparece no aviso de atualização do site. O arquivo `logo.png` da raiz é usado no cabeçalho e como ícone da aba.
+Edite [data/resultados.json](data/resultados.json). Complete os elencos femininos, os grupos e os resultados quando forem confirmados. Atualize também `atualizadoEm` com data, hora e fuso, por exemplo `"2026-10-09T13:39:00-03:00"`. Esse campo aparece no aviso de atualização do site. O arquivo `logo.png` da raiz é usado no cabeçalho e como ícone da aba.
 
 - Cada modalidade fica em `esportes`. Use `id: "volei"` ou `id: "basquete"`.
-- Em `times`, cada equipe precisa de um `id` único, `nome`, `categoria` (`"feminino"` ou `"masculino"`) e uma lista `jogadores`. O campo `grupo` (por exemplo, `"A"`) pode ser adicionado quando os grupos forem definidos; ele será obrigatório para jogos da fase de grupos. Cada atleta precisa de `id` único e `nome`; `numero` é opcional.
-- Em `partidas`, use IDs de equipe em `mandante` e `visitante` e a mesma `categoria` das duas equipes. `status` é `"agendada"` ou `"encerrada"`. Jogos agendados aparecem na tabela **Próximos jogos**; os encerrados aparecem em **Resultados**. Use `fase: "grupos"` para jogos que contam na classificação ou `fase: "eliminatoria"` para os demais.
+- Em `times`, cada equipe precisa de um `id` único, `nome`, `categoria` (`"feminino"` ou `"masculino"`) e uma lista `jogadores`. `nomeTabela` é opcional para o nome abreviado usado na programação. O campo `grupo` (por exemplo, `"A"`) pode ser adicionado quando os grupos forem definidos; ele será obrigatório para jogos da fase de grupos. Cada atleta precisa de `id` único e `nome`; `numero` é opcional.
+- Em `partidas`, use IDs de equipe em `mandante` e `visitante` e a mesma `categoria` das duas equipes. `numero` identifica o jogo na programação e `rodada` guarda valores como `"R1"`. `status` é `"agendada"` ou `"encerrada"`. Jogos agendados aparecem em **Próximos jogos**; os encerrados aparecem em **Resultados**. Use `fase: "a_definir"` até a fase ser confirmada, `"grupos"` para jogos que contam na classificação ou `"eliminatoria"` para os demais.
 - Em cada partida de grupos encerrada, `pontosClassificacao` define os pontos que cada equipe recebe na tabela, por exemplo `{"mandante": 3, "visitante": 0}`. Assim, você pode usar a regra oficial do festival sem alterar o site. A ordem da classificação é por pontos, depois vitórias e saldo de pontos marcados.
 - `periodos` guarda os pontos de cada set no vôlei. No basquete 3x3, use apenas uma entrada para o jogo até 21 pontos. O site calcula o placar final: sets vencidos no vôlei e pontos do jogo no basquete.
 - `pontosAtletas` guarda `atletaId` e `pontos` para cada atleta. O ID deve existir em uma das duas equipes da partida. Atletas sem entrada nessa lista não aparecem no resumo de pontuação.
@@ -26,19 +26,19 @@ Edite [data/resultados.json](data/resultados.json). Adicione os times femininos,
 - A seção **Estatísticas → Equipes** mostra a classificação de cada grupo: jogos, vitórias, derrotas, pontos da classificação, pontos marcados e sofridos. Só as partidas de grupos encerradas contam na tabela.
 - A seção **Estatísticas → Atletas** soma os pontos registrados em todas as partidas encerradas da modalidade e categoria, inclusive eliminatórias, e mostra jogos com registro, média e melhor jogo.
 
-Exemplo do formato de uma partida agendada (não é um confronto confirmado):
+Exemplo de uma partida agendada já cadastrada:
 
 ```json
 {
-  "id": "v-001",
+  "id": "v-2026-10-09-2",
+  "numero": 2,
   "categoria": "masculino",
-  "fase": "eliminatoria",
-  "data": "2026-10-10",
-  "horario": "15:00",
-  "local": "Ginásio Municipal",
+  "fase": "a_definir",
+  "data": "2026-10-09",
+  "horario": "20:30",
   "status": "agendada",
   "mandante": "v-lonney-tunes",
-  "visitante": "v-sand-volei",
+  "visitante": "v-wendell",
   "periodos": [],
   "pontosAtletas": []
 }

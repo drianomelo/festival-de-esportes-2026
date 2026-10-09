@@ -32,34 +32,28 @@ vm.runInContext(source, context);
 await new Promise((resolve) => setImmediate(resolve));
 
 const assert = (condition, message) => { if (!condition) throw new Error(message); };
-assert(byId('upcoming-panel').innerHTML.includes('Programação em breve'), 'Estado inicial dos próximos jogos não apareceu.');
+assert(byId('upcoming-panel').innerHTML.includes('Mestre da Sacada A'), 'Jogo feminino não apareceu na programação do vôlei.');
+assert(byId('upcoming-panel').innerHTML.includes('Looney') && byId('upcoming-panel').innerHTML.includes('Carcará Vôlei'), 'Jogos masculinos não apareceram na programação do vôlei.');
+assert(byId('upcoming-panel').innerHTML.includes('20:00') && byId('upcoming-panel').innerHTML.includes('21:00'), 'Horários do vôlei não apareceram.');
+assert(byId('upcoming-panel').innerHTML.includes('Sexta-feira, 09/10 · 3 jogos'), 'Resumo da programação do vôlei não apareceu.');
 assert(byId('match-list').innerHTML.includes('Ainda não há resultados'), 'Estado inicial dos resultados não apareceu.');
-assert(byId('update-notice').textContent.includes('9 de outubro de 2026 às 13:31'), 'Aviso de atualização não apareceu.');
-assert(data.esportes.every((sport) => sport.partidas.length === 0), 'O JSON publicado contém partidas não confirmadas.');
+assert(byId('update-notice').textContent.includes('9 de outubro de 2026 às 13:43'), 'Aviso de atualização não apareceu.');
+assert(data.esportes.every((sport) => sport.partidas.length === 3 && sport.partidas.every((match) => match.status === 'agendada')), 'A programação deve ter três jogos agendados por modalidade.');
+assert(data.esportes.every((sport) => sport.partidas.every((match) => match.local === 'Praça da Juventude')), 'Todos os jogos devem ocorrer na Praça da Juventude.');
 assert(byId('team-list').innerHTML.includes('Lonney Tunes') && byId('team-list').innerHTML.includes('Carcará Glória'), 'Os times do vôlei masculino não apareceram.');
 vm.runInContext("state.category = 'feminino'; render()", context);
-assert(byId('team-list').innerHTML.includes('elencos femininos'), 'O aviso genérico do vôlei feminino não apareceu.');
+assert(byId('team-list').innerHTML.includes('Mestre da Sacada A') && byId('team-list').innerHTML.includes('Elenco ainda não divulgado'), 'Equipes femininas sem elenco não apareceram.');
+assert(byId('upcoming-panel').innerHTML.includes('Looney'), 'Filtro de categoria ocultou jogos da programação geral do vôlei.');
 vm.runInContext("state.sportId = 'basquete'; state.category = 'masculino'; render()", context);
 assert(byId('team-list').innerHTML.includes('Time Guilherme') && byId('team-list').innerHTML.includes('Time Izael'), 'Os times do basquete não apareceram.');
+assert(byId('upcoming-panel').innerHTML.includes('Time Kauan') && byId('upcoming-panel').innerHTML.includes('R4'), 'Rodada ou equipe do basquete não apareceu.');
+assert(byId('upcoming-panel').innerHTML.includes('19:00') && byId('upcoming-panel').innerHTML.includes('19:40'), 'Horários do basquete não apareceram.');
 vm.runInContext("state.sportId = 'volei'; state.category = 'feminino'; render()", context);
 
 const volley = data.esportes.find((sport) => sport.id === 'volei');
-volley.times.push(
-  { id: 'teste-azul', nome: 'Teste Azul', categoria: 'feminino', grupo: 'A', jogadores: [{ id: 'atleta-azul', nome: 'Atleta Azul' }] },
-  { id: 'teste-verde', nome: 'Teste Verde', categoria: 'feminino', grupo: 'A', jogadores: [{ id: 'atleta-verde', nome: 'Atleta Verde' }] },
-);
-volley.partidas.push({ id: 'teste-jogo', categoria: 'feminino', fase: 'grupos', data: '2026-10-09', horario: '15:00', local: 'Ginásio Teste', status: 'agendada', mandante: 'teste-azul', visitante: 'teste-verde', periodos: [], pontosAtletas: [] });
+Object.assign(volley.partidas[0], { status: 'encerrada', periodos: [{ nome: '1º set', mandante: 25, visitante: 19 }] });
 vm.runInContext('render()', context);
-assert(byId('upcoming-panel').innerHTML.includes('Teste Azul') && byId('upcoming-panel').innerHTML.includes('Ginásio Teste'), 'Jogo agendado não apareceu na tabela.');
-assert(byId('match-list').innerHTML.includes('Ainda não há resultados'), 'Jogo agendado apareceu entre os resultados.');
+assert(!byId('upcoming-panel').innerHTML.includes('Mestre da Sacada A'), 'Jogo encerrado continuou nos próximos jogos.');
+assert(byId('match-list').innerHTML.includes('Mestre da Sacada A'), 'Jogo encerrado não apareceu nos resultados.');
 
-Object.assign(volley.partidas[0], { status: 'encerrada', periodos: [{ nome: '1º set', mandante: 25, visitante: 19 }], pontosClassificacao: { mandante: 3, visitante: 0 }, pontosAtletas: [{ atletaId: 'atleta-azul', pontos: 8 }] });
-vm.runInContext('render()', context);
-assert(byId('upcoming-panel').innerHTML.includes('Programação em breve'), 'Jogo encerrado continuou nos próximos jogos.');
-assert(byId('match-list').innerHTML.includes('Teste Azul'), 'Jogo encerrado não apareceu nos resultados.');
-assert(byId('athlete-stats').innerHTML.includes('Atleta Azul'), 'Pontuação individual não apareceu.');
-
-vm.runInContext("state.sportId = 'basquete'; state.category = 'masculino'; state.matchId = null; render()", context);
-assert(byId('upcoming-panel').innerHTML.includes('Programação em breve'), 'Estado vazio do basquete não apareceu.');
-
-console.log('Elencos, estados vazios, próximos jogos e resultados conferidos.');
+console.log('Seis jogos, horários, elencos e transição para resultados conferidos.');

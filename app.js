@@ -8,6 +8,12 @@ const dateText = (date) => {
   const parsed = new Date(`${date}T12:00:00`);
   return Number.isNaN(parsed.getTime()) ? date : new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).format(parsed);
 };
+const scheduleDayText = (date) => {
+  const parsed = new Date(`${date}T12:00:00-03:00`);
+  if (Number.isNaN(parsed.getTime())) return date;
+  const formatted = new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Bahia', weekday: 'long', day: '2-digit', month: '2-digit' }).format(parsed);
+  return formatted[0].toUpperCase() + formatted.slice(1);
+};
 const updatedText = (timestamp) => {
   const parsed = new Date(timestamp);
   return Number.isNaN(parsed.getTime()) ? 'Atualização não informada' : `Atualizado em ${new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Bahia', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }).format(parsed)}`;
@@ -27,13 +33,16 @@ const scoreHtml = (result) => result ? `${result[0]}<span>:</span>${result[1]}` 
 
 function renderUpcoming(sport) {
   const fixtures = sport.partidas.filter((match) => match.status === 'agendada').sort((a, b) => `${a.data || ''} ${a.horario || ''}`.localeCompare(`${b.data || ''} ${b.horario || ''}`));
+  const sameDay = fixtures.length > 0 && fixtures.every((match) => match.data === fixtures[0].data);
+  const summary = fixtures.length ? `${sameDay ? `${scheduleDayText(fixtures[0].data)} · ` : ''}${fixtures.length} ${fixtures.length === 1 ? 'jogo' : 'jogos'}` : 'Nenhum jogo agendado';
+  const detailHeading = sport.id === 'volei' ? 'Categoria' : 'Rodada';
   const rows = fixtures.map((match) => {
     const home = teamById(sport, match.mandante);
     const away = teamById(sport, match.visitante);
-    const phase = match.fase === 'eliminatoria' ? 'Eliminatória' : `Grupo ${home?.grupo || away?.grupo || 'a definir'}`;
-    return `<tr><td>${escapeHtml(dateText(match.data))}</td><td>${escapeHtml(match.horario || 'A definir')}</td><th scope="row">${escapeHtml(home?.nome || 'Equipe a definir')} <span class="fixture-versus">×</span> ${escapeHtml(away?.nome || 'Equipe a definir')}</th><td>${escapeHtml(phase)}</td><td>${escapeHtml(match.local || 'A definir')}</td></tr>`;
+    const detail = sport.id === 'volei' ? (match.categoria === 'feminino' ? 'Feminino' : 'Masculino') : (match.rodada || '—');
+    return `<tr><td>${escapeHtml(match.numero ?? '—')}</td><td>${escapeHtml(dateText(match.data))}</td><td>${escapeHtml(match.horario || 'A definir')}</td><th scope="row">${escapeHtml(home?.nomeTabela || home?.nome || 'Equipe a definir')} <span class="fixture-versus">×</span> ${escapeHtml(away?.nomeTabela || away?.nome || 'Equipe a definir')}</th><td>${escapeHtml(detail)}</td><td>${escapeHtml(match.local || 'A definir')}</td></tr>`;
   }).join('');
-  el('upcoming-panel').innerHTML = `<div class="upcoming-table-wrap"><table class="upcoming-table" aria-label="Próximos jogos da modalidade selecionada"><thead><tr><th scope="col">Data</th><th scope="col">Horário</th><th scope="col">Confronto</th><th scope="col">Fase</th><th scope="col">Local</th></tr></thead><tbody>${rows || '<tr><td class="empty-cell" colspan="5"><div class="upcoming-empty"><strong>Programação em breve.</strong><p>Os próximos confrontos aparecerão aqui assim que forem definidos.</p></div></td></tr>'}</tbody></table></div>`;
+  el('upcoming-panel').innerHTML = `<p class="upcoming-summary">${escapeHtml(summary)}</p><div class="upcoming-table-wrap"><table class="upcoming-table" aria-label="Próximos jogos da modalidade selecionada"><thead><tr><th scope="col">Jogo</th><th scope="col">Data</th><th scope="col">Horário</th><th scope="col">Confronto</th><th scope="col">${detailHeading}</th><th scope="col">Local</th></tr></thead><tbody>${rows || '<tr><td class="empty-cell" colspan="6"><div class="upcoming-empty"><strong>Programação em breve.</strong><p>Os próximos confrontos aparecerão aqui assim que forem definidos.</p></div></td></tr>'}</tbody></table></div>`;
 }
 
 function renderMatchList(sport) {
@@ -45,7 +54,7 @@ function renderMatchList(sport) {
     const result = matchResult(sport, match);
     return `<button class="match-row ${match.id === state.matchId ? 'is-selected' : ''}" type="button" data-match="${escapeHtml(match.id)}" aria-pressed="${match.id === state.matchId}">
       <span class="match-meta"><span>${escapeHtml(dateText(match.data))}${match.horario ? ` · ${escapeHtml(match.horario)}` : ''}</span><span class="match-status ${match.status !== 'encerrada' ? 'match-status--scheduled' : ''}">${match.status === 'encerrada' ? 'Encerrada' : 'Agendada'}</span></span>
-      <span class="match-score"><strong>${escapeHtml(home?.nome || 'Equipe não encontrada')}</strong><span class="score-pill">${scoreHtml(result)}</span><strong>${escapeHtml(away?.nome || 'Equipe não encontrada')}</strong></span>
+      <span class="match-score"><strong>${escapeHtml(home?.nomeTabela || home?.nome || 'Equipe não encontrada')}</strong><span class="score-pill">${scoreHtml(result)}</span><strong>${escapeHtml(away?.nomeTabela || away?.nome || 'Equipe não encontrada')}</strong></span>
     </button>`;
   }).join('') : '<p class="match-empty">Ainda não há resultados. Os placares aparecerão após os primeiros jogos.</p>';
   el('match-list').querySelectorAll('[data-match]').forEach((button) => button.addEventListener('click', () => { state.matchId = button.dataset.match; render(); }));
@@ -65,13 +74,13 @@ function renderMatchDetail(sport) {
   const result = matchResult(sport, match);
   const periods = Array.isArray(match.periodos) ? match.periodos : [];
   el('match-detail').innerHTML = `<div class="detail-top"><p class="detail-label">${match.status === 'encerrada' ? 'Resultado final' : 'Próxima partida'}</p><span class="detail-date">${escapeHtml(dateText(match.data))}${match.horario ? ` · ${escapeHtml(match.horario)}` : ''}<br>${escapeHtml(match.local || 'Local a definir')}</span></div>
-    <div class="detail-scoreboard"><span class="detail-team">${escapeHtml(home?.nome || 'Equipe não encontrada')}</span><span class="detail-score">${scoreHtml(result)}</span><span class="detail-team">${escapeHtml(away?.nome || 'Equipe não encontrada')}</span></div>
+    <div class="detail-scoreboard"><span class="detail-team">${escapeHtml(home?.nomeTabela || home?.nome || 'Equipe não encontrada')}</span><span class="detail-score">${scoreHtml(result)}</span><span class="detail-team">${escapeHtml(away?.nomeTabela || away?.nome || 'Equipe não encontrada')}</span></div>
     ${match.status === 'encerrada' ? `<div class="detail-divider"></div><h3 class="detail-subtitle">${sport.id === 'volei' ? 'Placar por set' : 'Placar do jogo'}</h3><div class="period-list">${periods.map((period) => `<div class="period-row"><span>${escapeHtml(period.nome)}</span><strong>${escapeHtml(period.mandante)} : ${escapeHtml(period.visitante)}</strong></div>`).join('') || '<p class="no-score">Placar ainda não informado.</p>'}</div><div class="detail-divider"></div><h3 class="detail-subtitle">Pontos por atleta</h3><div class="athlete-grid">${athleteScoreRows(home, match)}${athleteScoreRows(away, match)}</div>${sport.id === 'volei' ? '<p class="detail-note">No vôlei, a soma dos pontos individuais pode diferir do placar por conta de erros do adversário.</p>' : ''}` : '<div class="detail-divider"></div><p class="no-score">O placar e a pontuação dos atletas aparecerão aqui após o jogo. Para registrar o resultado, atualize o JSON e mude o status para “encerrada”.</p>'}`;
 }
 
 function renderStats(sport) {
   const completed = sport.partidas.filter((match) => match.status === 'encerrada');
-  const groupMatches = completed.filter((match) => match.fase !== 'eliminatoria');
+  const groupMatches = completed.filter((match) => match.fase === 'grupos');
   const teamStats = sport.times.map((team) => {
     const stats = { team, games: 0, wins: 0, losses: 0, points: 0, for: 0, against: 0 };
     groupMatches.forEach((match) => {
@@ -117,7 +126,7 @@ function renderStats(sport) {
 
 function renderTeams(sport) {
   el('team-count').textContent = sport.times.length ? `${sport.times.length} ${sport.times.length === 1 ? 'equipe' : 'equipes'}` : 'Equipes a definir';
-  el('team-list').innerHTML = sport.times.length ? sport.times.map((team) => `<article class="team-card"><div class="team-card-head"><h3>${escapeHtml(team.nome)}</h3><span class="roster-count">${team.jogadores.length} ${team.jogadores.length === 1 ? 'atleta' : 'atletas'}</span></div><ul class="roster-list">${team.jogadores.map((player) => `<li title="${escapeHtml(player.nome)}">${player.numero == null ? '' : `<span class="jersey">#${escapeHtml(player.numero)}</span>`}${escapeHtml(player.nome)}</li>`).join('')}</ul></article>`).join('') : `<p class="match-empty">${state.sportId === 'volei' && state.category === 'feminino' ? 'Os elencos femininos' : 'Os elencos'} serão publicados quando as equipes forem confirmadas.</p>`;
+  el('team-list').innerHTML = sport.times.length ? sport.times.map((team) => `<article class="team-card"><div class="team-card-head"><div><h3>${escapeHtml(team.nome)}</h3>${team.nomeTabela && team.nomeTabela !== team.nome ? `<p class="team-short-name">Na tabela: ${escapeHtml(team.nomeTabela)}</p>` : ''}</div><span class="roster-count">${team.jogadores.length ? `${team.jogadores.length} ${team.jogadores.length === 1 ? 'atleta' : 'atletas'}` : 'Elenco a definir'}</span></div>${team.jogadores.length ? `<ul class="roster-list">${team.jogadores.map((player) => `<li title="${escapeHtml(player.nome)}">${player.numero == null ? '' : `<span class="jersey">#${escapeHtml(player.numero)}</span>`}${escapeHtml(player.nome)}</li>`).join('')}</ul>` : '<p class="roster-pending">Elenco ainda não divulgado.</p>'}</article>`).join('') : `<p class="match-empty">${state.sportId === 'volei' && state.category === 'feminino' ? 'Os elencos femininos' : 'Os elencos'} serão publicados quando as equipes forem confirmadas.</p>`;
 }
 
 function render() {
@@ -131,7 +140,7 @@ function render() {
   const completed = sport.partidas.filter((match) => match.status === 'encerrada');
   if (!completed.some((match) => match.id === state.matchId)) state.matchId = completed[0]?.id || null;
   el('sport-panel').classList.toggle('is-empty', completed.length === 0);
-  renderUpcoming(sport);
+  renderUpcoming(selectedSport);
   renderMatchList(sport);
   renderMatchDetail(sport);
   renderStats(sport);

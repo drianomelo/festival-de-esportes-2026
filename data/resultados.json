@@ -1,7 +1,7 @@
 {
   "edicao": "2026",
   "cidade": "Nossa Senhora da Glória, SE",
-  "atualizadoEm": "2026-10-09T13:31:00-03:00",
+  "atualizadoEm": "2026-10-09T13:43:00-03:00",
   "esportes": [
     {
       "id": "volei",
@@ -11,6 +11,7 @@
           "id": "v-lonney-tunes",
           "categoria": "masculino",
           "nome": "Lonney Tunes",
+          "nomeTabela": "Looney",
           "jogadores": [
             { "id": "v-lonney-1", "nome": "Thiago" },
             { "id": "v-lonney-2", "nome": "Roberto Carlos" },
@@ -23,6 +24,7 @@
           "id": "v-sand-volei",
           "categoria": "masculino",
           "nome": "Sand Volei",
+          "nomeTabela": "Sand Vôlei",
           "jogadores": [
             { "id": "v-sand-1", "nome": "Roberto Teles" },
             { "id": "v-sand-2", "nome": "Kaick" },
@@ -36,6 +38,7 @@
           "id": "v-wendell",
           "categoria": "masculino",
           "nome": "Time de Wendell",
+          "nomeTabela": "Equipe Wendell",
           "jogadores": [
             { "id": "v-wendell-1", "nome": "Tico" },
             { "id": "v-wendell-2", "nome": "Matheus" },
@@ -49,15 +52,71 @@
           "id": "v-carcara-gloria",
           "categoria": "masculino",
           "nome": "Carcará Glória",
+          "nomeTabela": "Carcará Vôlei",
           "jogadores": [
             { "id": "v-carcara-1", "nome": "Adriano" },
             { "id": "v-carcara-2", "nome": "Adriel" },
             { "id": "v-carcara-3", "nome": "Vyctor" },
             { "id": "v-carcara-4", "nome": "Vitor" }
           ]
+        },
+        {
+          "id": "v-mestre-sacada-a",
+          "categoria": "feminino",
+          "nome": "Mestre da Sacada A",
+          "jogadores": []
+        },
+        {
+          "id": "v-volei-futuro-a",
+          "categoria": "feminino",
+          "nome": "Volei Futuro A",
+          "jogadores": []
         }
       ],
-      "partidas": []
+      "partidas": [
+        {
+          "id": "v-2026-10-09-1",
+          "numero": 1,
+          "categoria": "feminino",
+          "fase": "a_definir",
+          "data": "2026-10-09",
+          "horario": "20:00",
+          "local": "Praça da Juventude",
+          "status": "agendada",
+          "mandante": "v-mestre-sacada-a",
+          "visitante": "v-volei-futuro-a",
+          "periodos": [],
+          "pontosAtletas": []
+        },
+        {
+          "id": "v-2026-10-09-2",
+          "numero": 2,
+          "categoria": "masculino",
+          "fase": "a_definir",
+          "data": "2026-10-09",
+          "horario": "20:30",
+          "local": "Praça da Juventude",
+          "status": "agendada",
+          "mandante": "v-lonney-tunes",
+          "visitante": "v-wendell",
+          "periodos": [],
+          "pontosAtletas": []
+        },
+        {
+          "id": "v-2026-10-09-3",
+          "numero": 3,
+          "categoria": "masculino",
+          "fase": "a_definir",
+          "data": "2026-10-09",
+          "horario": "21:00",
+          "local": "Praça da Juventude",
+          "status": "agendada",
+          "mandante": "v-carcara-gloria",
+          "visitante": "v-sand-volei",
+          "periodos": [],
+          "pontosAtletas": []
+        }
+      ]
     },
     {
       "id": "basquete",
@@ -74,13 +133,13 @@
           ]
         },
         {
-          "id": "b-kaun",
+          "id": "b-kauan",
           "categoria": "masculino",
-          "nome": "Time Kaun",
+          "nome": "Time Kauan",
           "jogadores": [
-            { "id": "b-kaun-1", "nome": "Kauan" },
-            { "id": "b-kaun-2", "nome": "Juan" },
-            { "id": "b-kaun-3", "nome": "davidzão" }
+            { "id": "b-kauan-1", "nome": "Kauan" },
+            { "id": "b-kauan-2", "nome": "Juan" },
+            { "id": "b-kauan-3", "nome": "davidzão" }
           ]
         },
         {
@@ -124,7 +183,53 @@
           ]
         }
       ],
-      "partidas": []
+      "partidas": [
+        {
+          "id": "b-2026-10-09-1",
+          "numero": 1,
+          "rodada": "R1",
+          "categoria": "masculino",
+          "fase": "a_definir",
+          "data": "2026-10-09",
+          "horario": "19:00",
+          "local": "Praça da Juventude",
+          "status": "agendada",
+          "mandante": "b-adriano",
+          "visitante": "b-luiz",
+          "periodos": [],
+          "pontosAtletas": []
+        },
+        {
+          "id": "b-2026-10-09-2",
+          "numero": 2,
+          "rodada": "R4",
+          "categoria": "masculino",
+          "fase": "a_definir",
+          "data": "2026-10-09",
+          "horario": "19:20",
+          "local": "Praça da Juventude",
+          "status": "agendada",
+          "mandante": "b-guilherme",
+          "visitante": "b-kauan",
+          "periodos": [],
+          "pontosAtletas": []
+        },
+        {
+          "id": "b-2026-10-09-3",
+          "numero": 3,
+          "rodada": "R3",
+          "categoria": "masculino",
+          "fase": "a_definir",
+          "data": "2026-10-09",
+          "horario": "19:40",
+          "local": "Praça da Juventude",
+          "status": "agendada",
+          "mandante": "b-guilherme",
+          "visitante": "b-luiz",
+          "periodos": [],
+          "pontosAtletas": []
+        }
+      ]
     }
   ]
 }

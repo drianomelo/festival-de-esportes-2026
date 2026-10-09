@@ -27,6 +27,7 @@ for (const sport of Array.isArray(data.esportes) ? data.esportes : []) {
     if (!team.id || teamIds.has(team.id)) fail(`${label}: equipe com ID ausente ou duplicado (${team.id || 'vazio'}).`);
     teamIds.add(team.id);
     if (!['feminino', 'masculino'].includes(team.categoria)) fail(`${label}: categoria inválida na equipe ${team.id}.`);
+    if (team.nomeTabela != null && (typeof team.nomeTabela !== 'string' || !team.nomeTabela.trim())) fail(`${label}: nomeTabela inválido na equipe ${team.id}.`);
     if (team.grupo != null && (typeof team.grupo !== 'string' || !team.grupo.trim())) fail(`${label}: o grupo da equipe ${team.id} deve ser um nome não vazio quando informado.`);
     if (sport.id === 'basquete' && team.categoria !== 'masculino') fail(`${label}: o basquete 3x3 deve ser masculino.`);
     if (!Array.isArray(team.jogadores)) { fail(`${label}: a equipe ${team.id} precisa de uma lista de jogadores.`); continue; }
@@ -46,7 +47,9 @@ for (const sport of Array.isArray(data.esportes) ? data.esportes : []) {
     const away = teams.find((team) => team.id === match.visitante);
     if (!home || !away) fail(`${name}: mandante ou visitante não existe em times.`);
     if (home && away && (home.categoria !== match.categoria || away.categoria !== match.categoria)) fail(`${name}: a categoria da partida não coincide com as equipes.`);
-    if (!['grupos', 'eliminatoria'].includes(match.fase)) fail(`${name}: fase deve ser "grupos" ou "eliminatoria".`);
+    if (!['a_definir', 'grupos', 'eliminatoria'].includes(match.fase)) fail(`${name}: fase deve ser "a_definir", "grupos" ou "eliminatoria".`);
+    if (match.numero != null && (!Number.isInteger(match.numero) || match.numero < 1)) fail(`${name}: numero deve ser um inteiro positivo.`);
+    if (match.rodada != null && (typeof match.rodada !== 'string' || !match.rodada.trim())) fail(`${name}: rodada deve ser um texto não vazio.`);
     if (match.fase === 'grupos' && home && away && (!home.grupo || !away.grupo || home.grupo !== away.grupo)) fail(`${name}: as equipes de uma partida de grupos precisam ter o mesmo grupo definido.`);
     if (!['agendada', 'encerrada'].includes(match.status)) fail(`${name}: status deve ser "agendada" ou "encerrada".`);
     if (match.fase === 'grupos' && match.status === 'encerrada' && (!match.pontosClassificacao || !isPoints(match.pontosClassificacao.mandante) || !isPoints(match.pontosClassificacao.visitante))) fail(`${name}: informe os pontosClassificacao de mandante e visitante.`);
