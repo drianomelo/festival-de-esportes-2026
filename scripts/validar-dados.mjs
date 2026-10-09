@@ -51,10 +51,12 @@ for (const sport of Array.isArray(data.esportes) ? data.esportes : []) {
     if (match.numero != null && (!Number.isInteger(match.numero) || match.numero < 1)) fail(`${name}: numero deve ser um inteiro positivo.`);
     if (match.rodada != null && (typeof match.rodada !== 'string' || !match.rodada.trim())) fail(`${name}: rodada deve ser um texto não vazio.`);
     if (match.fase === 'grupos' && home && away && (!home.grupo || !away.grupo || home.grupo !== away.grupo)) fail(`${name}: as equipes de uma partida de grupos precisam ter o mesmo grupo definido.`);
-    if (!['agendada', 'encerrada'].includes(match.status)) fail(`${name}: status deve ser "agendada" ou "encerrada".`);
+    if (!['agendada', 'ao_vivo', 'encerrada'].includes(match.status)) fail(`${name}: status deve ser "agendada", "ao_vivo" ou "encerrada".`);
     if (match.fase === 'grupos' && match.status === 'encerrada' && (!match.pontosClassificacao || !isPoints(match.pontosClassificacao.mandante) || !isPoints(match.pontosClassificacao.visitante))) fail(`${name}: informe os pontosClassificacao de mandante e visitante.`);
     if (!Array.isArray(match.periodos) || !Array.isArray(match.pontosAtletas)) { fail(`${name}: periodos e pontosAtletas precisam ser listas.`); continue; }
     if (match.status === 'encerrada' && match.periodos.length === 0) fail(`${name}: partida encerrada sem placar.`);
+    if (match.status === 'ao_vivo' && match.periodos.length === 0) fail(`${name}: partida ao vivo sem placar.`);
+    if (match.status === 'agendada' && match.periodos.length !== 0) fail(`${name}: partida agendada não deve ter placar.`);
     if (sport.id === 'basquete' && match.status === 'encerrada' && match.periodos.length !== 1) fail(`${name}: basquete 3x3 usa um único período até 21 pontos.`);
     for (const period of match.periodos) {
       if (!isPoints(period.mandante) || !isPoints(period.visitante)) fail(`${name}: placar precisa ter números inteiros não negativos.`);

@@ -1,4 +1,4 @@
-const DATA_URL = './data/resultados.json';
+const DATA_URL = './api/resultados';
 
 const state = { data: null, sportId: 'volei', category: 'masculino', matchId: null };
 const el = (id) => document.getElementById(id);
@@ -22,9 +22,10 @@ const currentSport = () => state.data?.esportes.find((sport) => sport.id === sta
 const currentView = (sport) => ({ ...sport, times: sport.times.filter((team) => team.categoria === state.category), partidas: sport.partidas.filter((match) => match.categoria === state.category) });
 const teamById = (sport, id) => sport.times.find((team) => team.id === id);
 const matchResult = (sport, match) => {
-  if (match.status !== 'encerrada') return null;
+  if (!['ao_vivo', 'encerrada'].includes(match.status) || !match.periodos?.length) return null;
   const periods = Array.isArray(match.periodos) ? match.periodos : [];
   if (sport.id === 'volei') {
+    if (match.status === 'ao_vivo') return [periods.at(-1).mandante, periods.at(-1).visitante];
     return [periods.filter((period) => period.mandante > period.visitante).length, periods.filter((period) => period.visitante > period.mandante).length];
   }
   return [periods.reduce((sum, period) => sum + Number(period.mandante || 0), 0), periods.reduce((sum, period) => sum + Number(period.visitante || 0), 0)];
@@ -46,14 +47,14 @@ function renderUpcoming(sport) {
 }
 
 function renderMatchList(sport) {
-  const matches = sport.partidas.filter((match) => match.status === 'encerrada').sort((a, b) => String(b.data || '').localeCompare(String(a.data || '')));
-  el('match-count').textContent = `${matches.length} ${matches.length === 1 ? 'resultado' : 'resultados'}`;
+  const matches = sport.partidas.filter((match) => ['ao_vivo', 'encerrada'].includes(match.status)).sort((a, b) => Number(b.status === 'ao_vivo') - Number(a.status === 'ao_vivo') || String(b.data || '').localeCompare(String(a.data || '')));
+  el('match-count').textContent = `${matches.length} ${matches.length === 1 ? 'partida' : 'partidas'}`;
   el('match-list').innerHTML = matches.length ? matches.map((match) => {
     const home = teamById(sport, match.mandante);
     const away = teamById(sport, match.visitante);
     const result = matchResult(sport, match);
     return `<button class="match-row ${match.id === state.matchId ? 'is-selected' : ''}" type="button" data-match="${escapeHtml(match.id)}" aria-pressed="${match.id === state.matchId}">
-      <span class="match-meta"><span>${escapeHtml(dateText(match.data))}${match.horario ? ` · ${escapeHtml(match.horario)}` : ''}</span><span class="match-status ${match.status !== 'encerrada' ? 'match-status--scheduled' : ''}">${match.status === 'encerrada' ? 'Encerrada' : 'Agendada'}</span></span>
+      <span class="match-meta"><span>${escapeHtml(dateText(match.data))}${match.horario ? ` · ${escapeHtml(match.horario)}` : ''}</span><span class="match-status ${match.status === 'ao_vivo' ? 'match-status--live' : ''}">${match.status === 'encerrada' ? 'Encerrada' : 'Ao vivo'}</span></span>
       <span class="match-score"><strong>${escapeHtml(home?.nomeTabela || home?.nome || 'Equipe não encontrada')}</strong><span class="score-pill">${scoreHtml(result)}</span><strong>${escapeHtml(away?.nomeTabela || away?.nome || 'Equipe não encontrada')}</strong></span>
     </button>`;
   }).join('') : '<p class="match-empty">Ainda não há resultados. Os placares aparecerão após os primeiros jogos.</p>';
@@ -67,15 +68,15 @@ function athleteScoreRows(team, match) {
 }
 
 function renderMatchDetail(sport) {
-  const match = sport.partidas.find((item) => item.id === state.matchId && item.status === 'encerrada');
-  if (!match) { el('match-detail').innerHTML = '<div class="detail-empty">Selecione um jogo encerrado para ver o placar e a pontuação dos atletas.</div>'; return; }
+  const match = sport.partidas.find((item) => item.id === state.matchId && ['ao_vivo', 'encerrada'].includes(item.status));
+  if (!match) { el('match-detail').innerHTML = '<div class="detail-empty">Selecione um jogo para ver o placar e a pontuação dos atletas.</div>'; return; }
   const home = teamById(sport, match.mandante);
   const away = teamById(sport, match.visitante);
   const result = matchResult(sport, match);
   const periods = Array.isArray(match.periodos) ? match.periodos : [];
-  el('match-detail').innerHTML = `<div class="detail-top"><p class="detail-label">${match.status === 'encerrada' ? 'Resultado final' : 'Próxima partida'}</p><span class="detail-date">${escapeHtml(dateText(match.data))}${match.horario ? ` · ${escapeHtml(match.horario)}` : ''}<br>${escapeHtml(match.local || 'Local a definir')}</span></div>
+  el('match-detail').innerHTML = `<div class="detail-top"><p class="detail-label">${match.status === 'encerrada' ? 'Resultado final' : sport.id === 'volei' ? 'Placar ao vivo · set atual' : 'Placar ao vivo'}</p><span class="detail-date">${escapeHtml(dateText(match.data))}${match.horario ? ` · ${escapeHtml(match.horario)}` : ''}<br>${escapeHtml(match.local || 'Local a definir')}</span></div>
     <div class="detail-scoreboard"><span class="detail-team">${escapeHtml(home?.nomeTabela || home?.nome || 'Equipe não encontrada')}</span><span class="detail-score">${scoreHtml(result)}</span><span class="detail-team">${escapeHtml(away?.nomeTabela || away?.nome || 'Equipe não encontrada')}</span></div>
-    ${match.status === 'encerrada' ? `<div class="detail-divider"></div><h3 class="detail-subtitle">${sport.id === 'volei' ? 'Placar por set' : 'Placar do jogo'}</h3><div class="period-list">${periods.map((period) => `<div class="period-row"><span>${escapeHtml(period.nome)}</span><strong>${escapeHtml(period.mandante)} : ${escapeHtml(period.visitante)}</strong></div>`).join('') || '<p class="no-score">Placar ainda não informado.</p>'}</div><div class="detail-divider"></div><h3 class="detail-subtitle">Pontos por atleta</h3><div class="athlete-grid">${athleteScoreRows(home, match)}${athleteScoreRows(away, match)}</div>${sport.id === 'volei' ? '<p class="detail-note">No vôlei, a soma dos pontos individuais pode diferir do placar por conta de erros do adversário.</p>' : ''}` : '<div class="detail-divider"></div><p class="no-score">O placar e a pontuação dos atletas aparecerão aqui após o jogo. Para registrar o resultado, atualize o JSON e mude o status para “encerrada”.</p>'}`;
+    <div class="detail-divider"></div><h3 class="detail-subtitle">${sport.id === 'volei' ? 'Placar por set' : 'Placar do jogo'}</h3><div class="period-list">${periods.map((period) => `<div class="period-row"><span>${escapeHtml(period.nome)}</span><strong>${escapeHtml(period.mandante)} : ${escapeHtml(period.visitante)}</strong></div>`).join('') || '<p class="no-score">Placar ainda não informado.</p>'}</div><div class="detail-divider"></div><h3 class="detail-subtitle">Pontos por atleta</h3><div class="athlete-grid">${athleteScoreRows(home, match)}${athleteScoreRows(away, match)}</div>${sport.id === 'volei' ? '<p class="detail-note">No vôlei, a soma dos pontos individuais pode diferir do placar por conta de erros do adversário.</p>' : ''}`;
 }
 
 function renderStats(sport) {
@@ -138,8 +139,9 @@ function render() {
   el('basket-category').hidden = state.sportId !== 'basquete';
   document.querySelectorAll('.category-tab').forEach((button) => { const active = button.dataset.category === state.category; button.classList.toggle('is-active', active); button.setAttribute('aria-pressed', String(active)); });
   const completed = sport.partidas.filter((match) => match.status === 'encerrada');
-  if (!completed.some((match) => match.id === state.matchId)) state.matchId = completed[0]?.id || null;
-  el('sport-panel').classList.toggle('is-empty', completed.length === 0);
+  const visibleMatches = sport.partidas.filter((match) => ['ao_vivo', 'encerrada'].includes(match.status));
+  if (!visibleMatches.some((match) => match.id === state.matchId)) state.matchId = visibleMatches[0]?.id || null;
+  el('sport-panel').classList.toggle('is-empty', visibleMatches.length === 0);
   renderUpcoming(selectedSport);
   renderMatchList(sport);
   renderMatchDetail(sport);
@@ -149,15 +151,19 @@ function render() {
 
 async function loadData() {
   try {
-    const response = await fetch(DATA_URL, { cache: 'no-cache' });
+    let response = await fetch(DATA_URL, { cache: 'no-store' });
+    if (!response.ok && state.data) return;
+    if (!response.ok) response = await fetch('./data/resultados.json', { cache: 'no-store' });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     if (!Array.isArray(data.esportes)) throw new Error('Formato inválido: falta a lista de esportes.');
+    if (state.data?.atualizadoEm === data.atualizadoEm) return;
     state.data = data;
     el('update-notice').textContent = updatedText(data.atualizadoEm);
     el('update-notice').hidden = false;
     render();
   } catch (error) {
+    if (state.data) return;
     el('upcoming-panel').innerHTML = `<div class="error-panel">Não foi possível carregar a programação. Confira o arquivo <strong>data/resultados.json</strong> e tente atualizar a página.<br><small>${escapeHtml(error.message)}</small></div>`;
     el('sport-panel').innerHTML = '';
     el('team-list').innerHTML = '';
@@ -178,3 +184,4 @@ document.querySelector('.category-switch').addEventListener('keydown', (event) =
   state.category = state.category === 'feminino' ? 'masculino' : 'feminino'; state.matchId = null; render(); el(`category-${state.category}`).focus();
 });
 loadData();
+if (typeof setInterval === 'function') setInterval(loadData, 30000);

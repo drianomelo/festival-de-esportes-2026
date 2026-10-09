@@ -1,0 +1,59 @@
+:root { font-family: Arial, Helvetica, sans-serif; color: #163d25; background: #f5f6ed; }
+* { box-sizing: border-box; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+body { margin: 0; }
+button, input, select { font: inherit; }
+.admin-shell { width: min(100% - 32px, 920px); margin: 0 auto 80px; }
+.admin-header { display: flex; align-items: center; gap: 18px; padding: 32px 0; }
+.admin-header img { width: 62px; height: 62px; object-fit: contain; }
+.admin-header div { flex: 1; }
+.admin-header p { margin: 0 0 5px; color: #00632A; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }
+.admin-header h1 { margin: 0; font-size: clamp(26px, 5vw, 42px); line-height: 1.05; }
+.admin-header a { color: #0367B2; font-weight: 700; }
+.admin-notice { background: #E2DF92; border-left: 5px solid #FECE09; padding: 14px 18px; margin-bottom: 18px; font-weight: 700; }
+.admin-card { background: #fff; border: 1px solid #d8e2d7; border-radius: 18px; padding: clamp(20px, 4vw, 32px); margin: 16px 0; box-shadow: 0 8px 28px #143e2410; }
+.card-heading { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 23px; }
+.card-heading > span { background: #00632A; color: #fff; border-radius: 10px; padding: 9px; font-weight: 800; font-size: 13px; }
+.card-heading h2 { margin: 0 0 4px; font-size: 23px; }
+.card-heading p { margin: 0; color: #5c6d5d; line-height: 1.45; }
+label { display: block; font-size: 13px; font-weight: 800; margin: 0 0 8px; }
+input, select { width: 100%; min-height: 44px; border: 1px solid #a7b8aa; border-radius: 9px; background: #fff; color: #173b27; padding: 9px 12px; }
+input:focus, select:focus, button:focus-visible, a:focus-visible { outline: 3px solid #FECE09; outline-offset: 2px; }
+input[type=number] { max-width: 100px; }
+.match-meta { margin: 12px 0 0; color: #526857; }
+.score-heading, .period-row, .classification-row { display: grid; grid-template-columns: 100px minmax(0, 1fr) minmax(0, 1fr) 36px; gap: 12px; align-items: end; }
+.score-heading { margin: 24px 0 8px; font-weight: 800; }
+.score-heading span:first-child { grid-column: 2; }
+.period-row { padding: 10px 0; border-top: 1px solid #edf0e8; }
+.period-row strong { align-self: center; }
+.period-row label { margin: 0; }
+.period-row button { min-height: 40px; background: #fff; border: 1px solid #b8c5b7; border-radius: 8px; cursor: pointer; }
+.quiet-button { margin-top: 15px; padding: 10px 14px; color: #00632A; background: #e9f2e8; border: 0; border-radius: 8px; font-weight: 800; cursor: pointer; }
+.athlete-team { margin-top: 20px; }
+.athlete-team h3 { margin: 0 0 10px; font-size: 18px; }
+.athlete-row { display: grid; grid-template-columns: minmax(120px, 1fr) repeat(3, 100px); gap: 12px; align-items: end; border-top: 1px solid #edf0e8; padding: 10px 0; }
+.athlete-row strong { align-self: center; }
+.athlete-row input { max-width: none; }
+.athlete-row label { font-size: 11px; color: #526857; }
+.classification-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.classification-row input { max-width: none; }
+.admin-actions { display: flex; align-items: end; gap: 20px; padding: 24px 0; }
+.admin-actions > div { flex: 1; }
+.admin-actions small { display: block; color: #5c6d5d; margin-top: 8px; }
+.save-button { min-height: 48px; padding: 12px 24px; border: 0; border-radius: 9px; background: #00632A; color: #fff; font-weight: 800; cursor: pointer; }
+.save-button:hover { background: #004d20; }
+.save-button:disabled { opacity: .6; cursor: wait; }
+.feedback { min-height: 24px; font-weight: 700; }
+.feedback[data-kind=error] { color: #9b2929; }
+.feedback[data-kind=success] { color: #00632A; }
+@media (max-width: 650px) {
+  .admin-header { flex-wrap: wrap; }
+  .admin-header a { margin-left: 80px; }
+  .score-heading, .period-row { grid-template-columns: 65px 1fr 1fr 32px; gap: 8px; }
+  .score-heading { font-size: 12px; }
+  .period-row strong { font-size: 12px; }
+  .athlete-row { grid-template-columns: repeat(3, 1fr); }
+  .athlete-row strong { grid-column: 1 / -1; }
+  .admin-actions { display: block; }
+  .save-button { width: 100%; margin-top: 20px; }
+}

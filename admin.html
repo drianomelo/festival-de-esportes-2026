@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="theme-color" content="#00632A" />
+    <title>Atualizar jogos · Festival de Esportes 2026</title>
+    <link rel="icon" href="./logo.png" type="image/png" />
+    <link rel="stylesheet" href="./admin.css" />
+    <script src="./admin.js" defer></script>
+  </head>
+  <body>
+    <main class="admin-shell">
+      <header class="admin-header">
+        <img src="./logo.png" alt="Brasão de Nossa Senhora da Glória" />
+        <div><p>Festival de Esportes 2026</p><h1>Atualizar jogos</h1></div>
+        <a href="./index.html">Ver site</a>
+      </header>
+      <div class="admin-notice">Área de organização · salve cada atualização para publicá-la no site.</div>
+      <form id="game-form" autocomplete="off">
+        <section class="admin-card">
+          <div class="card-heading"><span>01</span><div><h2>Escolha a partida</h2><p>Os dados são lidos do arquivo mais recente no repositório.</p></div></div>
+          <label for="match-select">Jogo</label>
+          <select id="match-select" required></select>
+          <p id="match-meta" class="match-meta"></p>
+        </section>
+        <section class="admin-card">
+          <div class="card-heading"><span>02</span><div><h2>Placar e situação</h2><p>Você pode atualizar durante o jogo ou informar tudo no final.</p></div></div>
+          <label for="match-status">Situação</label>
+          <select id="match-status">
+            <option value="agendada">Agendada</option>
+            <option value="ao_vivo">Ao vivo</option>
+            <option value="encerrada">Encerrada</option>
+          </select>
+          <div id="score-heading" class="score-heading"></div>
+          <div id="periods"></div>
+          <button id="add-set" class="quiet-button" type="button" hidden>+ Adicionar set</button>
+        </section>
+        <section class="admin-card">
+          <div class="card-heading"><span>03</span><div><h2>Pontos dos atletas</h2><p>Preencha o que souber. No basquete encerrado, a soma precisa conferir com o placar.</p></div></div>
+          <div id="athletes"></div>
+        </section>
+        <section class="admin-card" id="classification-card">
+          <div class="card-heading"><span>04</span><div><h2>Pontos na classificação</h2><p>Obrigatórios ao encerrar jogo de grupo. Use a regra oficial do festival.</p></div></div>
+          <div id="classification"></div>
+        </section>
+        <div class="admin-actions">
+          <div><label for="admin-password">Senha de organização</label><input id="admin-password" type="password" autocomplete="current-password" required /><small>A senha é enviada apenas ao salvar e não fica gravada no navegador.</small></div>
+          <button id="save-button" class="save-button" type="submit">Salvar atualização</button>
+        </div>
+        <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+      </form>
+    </main>
+  </body>
+</html>

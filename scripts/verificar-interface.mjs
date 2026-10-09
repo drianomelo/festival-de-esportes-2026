@@ -56,6 +56,10 @@ assert(byId('upcoming-panel').innerHTML.includes('19:00') && byId('upcoming-pane
 vm.runInContext("state.sportId = 'volei'; state.category = 'feminino'; render()", context);
 
 const volley = data.esportes.find((sport) => sport.id === 'volei');
+Object.assign(volley.partidas[0], { status: 'ao_vivo', periodos: [{ nome: '1º set', mandante: 12, visitante: 9 }] });
+vm.runInContext('render()', context);
+assert(byId('match-list').innerHTML.includes('Ao vivo') && byId('match-detail').innerHTML.includes('12 : 9'), 'Placar ao vivo não apareceu.');
+assert(!byId('upcoming-panel').innerHTML.includes('Mestre da Sacada A'), 'Jogo ao vivo continuou nos próximos jogos.');
 Object.assign(volley.partidas[0], { status: 'encerrada', periodos: [{ nome: '1º set', mandante: 25, visitante: 19 }] });
 vm.runInContext('render()', context);
 assert(!byId('upcoming-panel').innerHTML.includes('Mestre da Sacada A'), 'Jogo encerrado continuou nos próximos jogos.');

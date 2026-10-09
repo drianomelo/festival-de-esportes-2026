@@ -972,3 +972,4 @@ h1 em {
     padding: 26px 22px;
   }
 }
+.match-status--live { background: #FECE09; color: #173d24; }
