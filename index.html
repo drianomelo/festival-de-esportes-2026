@@ -8,8 +8,8 @@
       name="description"
       content="Resultados, partidas, equipes e destaques do Festival de Esportes 2026 em Nossa Senhora da Glória, Sergipe."
     />
-    <title>Festival de Esportes 2026 · Resultados</title>
-    <link rel="icon" href="./logo.png" type="image/jpeg" />
+    <title>Festival de Esportes 2026 · Jogos e resultados</title>
+    <link rel="icon" href="./logo.png" type="image/png" />
     <link rel="stylesheet" href="./styles.css" />
     <script src="./app.js" defer></script>
   </head>
@@ -44,8 +44,9 @@
             </p>
             <h1 id="page-title">O jogo acontece<br /><em>aqui.</em></h1>
             <p class="intro-description">
-              Acompanhe o vôlei feminino e masculino e o basquete 3x3 masculino:
-              placares, equipes e pontos de cada atleta.
+              Confira os próximos jogos do vôlei feminino e masculino e do
+              basquete 3x3 masculino. Os resultados e as estatísticas aparecem
+              conforme o festival acontece.
             </p>
           </div>
           <div class="court-art" aria-hidden="true">
@@ -64,22 +65,18 @@
           hidden
         ></div>
 
-        <section class="scoreboard-section" aria-labelledby="scoreboard-title">
+        <section class="schedule-section" aria-labelledby="schedule-title">
           <div class="section-heading">
             <div>
-              <h2 id="scoreboard-title">Resultados e partidas</h2>
-              <p>
-                Escolha a modalidade e abra uma partida para ver os detalhes.
-              </p>
+              <h2 id="schedule-title">Próximos jogos</h2>
+              <p>Confrontos, horários e locais da modalidade selecionada.</p>
             </div>
-            <div class="sport-switch" role="tablist" aria-label="Modalidade">
+            <div class="sport-switch" role="group" aria-label="Modalidade">
               <button
                 id="tab-volei"
                 class="sport-tab is-active"
                 type="button"
-                role="tab"
-                aria-selected="true"
-                aria-controls="sport-panel"
+                aria-pressed="true"
                 data-sport="volei"
               >
                 Vôlei
@@ -88,9 +85,7 @@
                 id="tab-basquete"
                 class="sport-tab"
                 type="button"
-                role="tab"
-                aria-selected="false"
-                aria-controls="sport-panel"
+                aria-pressed="false"
                 data-sport="basquete"
               >
                 Basquete 3x3
@@ -127,15 +122,24 @@
             Masculino · jogo único até 21 pontos
           </p>
 
+          <div id="upcoming-panel" class="upcoming-panel" aria-live="polite"></div>
+        </section>
+
+        <section class="scoreboard-section" aria-labelledby="scoreboard-title">
+          <div class="section-heading">
+            <div>
+              <h2 id="scoreboard-title">Resultados</h2>
+              <p>Placares e pontuação dos atletas após cada partida.</p>
+            </div>
+          </div>
+
           <div
             id="sport-panel"
             class="scoreboard-grid"
-            role="tabpanel"
-            aria-labelledby="tab-volei"
           >
             <div class="match-column">
               <div class="column-heading">
-                <h3>Partidas</h3>
+                <h3>Jogos encerrados</h3>
                 <span id="match-count"></span>
               </div>
               <div id="match-list" class="match-list" aria-live="polite"></div>

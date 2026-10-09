@@ -25,12 +25,19 @@ const matchResult = (sport, match) => {
 };
 const scoreHtml = (result) => result ? `${result[0]}<span>:</span>${result[1]}` : '×';
 
+function renderUpcoming(sport) {
+  const fixtures = sport.partidas.filter((match) => match.status === 'agendada').sort((a, b) => `${a.data || ''} ${a.horario || ''}`.localeCompare(`${b.data || ''} ${b.horario || ''}`));
+  el('upcoming-panel').innerHTML = fixtures.length ? `<div class="upcoming-table-wrap"><table class="upcoming-table" aria-label="Próximos jogos da modalidade selecionada"><thead><tr><th scope="col">Data</th><th scope="col">Horário</th><th scope="col">Confronto</th><th scope="col">Fase</th><th scope="col">Local</th></tr></thead><tbody>${fixtures.map((match) => {
+    const home = teamById(sport, match.mandante);
+    const away = teamById(sport, match.visitante);
+    const phase = match.fase === 'eliminatoria' ? 'Eliminatória' : `Grupo ${home?.grupo || away?.grupo || 'a definir'}`;
+    return `<tr><td>${escapeHtml(dateText(match.data))}</td><td>${escapeHtml(match.horario || 'A definir')}</td><th scope="row">${escapeHtml(home?.nome || 'Equipe a definir')} <span class="fixture-versus">×</span> ${escapeHtml(away?.nome || 'Equipe a definir')}</th><td>${escapeHtml(phase)}</td><td>${escapeHtml(match.local || 'A definir')}</td></tr>`;
+  }).join('')}</tbody></table></div>` : '<div class="upcoming-empty"><strong>Programação em breve.</strong><p>Os próximos confrontos aparecerão aqui assim que forem definidos.</p></div>';
+}
+
 function renderMatchList(sport) {
-  const matches = [...sport.partidas].sort((a, b) => {
-    if (a.status !== b.status) return a.status === 'encerrada' ? -1 : 1;
-    return String(b.data || '').localeCompare(String(a.data || ''));
-  });
-  el('match-count').textContent = `${matches.length} ${matches.length === 1 ? 'partida' : 'partidas'}`;
+  const matches = sport.partidas.filter((match) => match.status === 'encerrada').sort((a, b) => String(b.data || '').localeCompare(String(a.data || '')));
+  el('match-count').textContent = `${matches.length} ${matches.length === 1 ? 'resultado' : 'resultados'}`;
   el('match-list').innerHTML = matches.length ? matches.map((match) => {
     const home = teamById(sport, match.mandante);
     const away = teamById(sport, match.visitante);
@@ -39,7 +46,7 @@ function renderMatchList(sport) {
       <span class="match-meta"><span>${escapeHtml(dateText(match.data))}${match.horario ? ` · ${escapeHtml(match.horario)}` : ''}</span><span class="match-status ${match.status !== 'encerrada' ? 'match-status--scheduled' : ''}">${match.status === 'encerrada' ? 'Encerrada' : 'Agendada'}</span></span>
       <span class="match-score"><strong>${escapeHtml(home?.nome || 'Equipe não encontrada')}</strong><span class="score-pill">${scoreHtml(result)}</span><strong>${escapeHtml(away?.nome || 'Equipe não encontrada')}</strong></span>
     </button>`;
-  }).join('') : '<p class="match-empty">Ainda não há partidas nesta modalidade. Adicione uma em <strong>data/resultados.json</strong>.</p>';
+  }).join('') : '<p class="match-empty">Ainda não há resultados. Os placares aparecerão após os primeiros jogos.</p>';
   el('match-list').querySelectorAll('[data-match]').forEach((button) => button.addEventListener('click', () => { state.matchId = button.dataset.match; render(); }));
 }
 
@@ -50,8 +57,8 @@ function athleteScoreRows(team, match) {
 }
 
 function renderMatchDetail(sport) {
-  const match = sport.partidas.find((item) => item.id === state.matchId);
-  if (!match) { el('match-detail').innerHTML = '<div class="detail-empty">Selecione uma partida para ver o placar e a pontuação dos atletas.</div>'; return; }
+  const match = sport.partidas.find((item) => item.id === state.matchId && item.status === 'encerrada');
+  if (!match) { el('match-detail').innerHTML = '<div class="detail-empty">Selecione um jogo encerrado para ver o placar e a pontuação dos atletas.</div>'; return; }
   const home = teamById(sport, match.mandante);
   const away = teamById(sport, match.visitante);
   const result = matchResult(sport, match);
@@ -84,7 +91,7 @@ function renderStats(sport) {
   el('team-stats').innerHTML = groups.length ? groups.map((group) => {
     const ranking = teamStats.filter((stats) => (stats.team.grupo || 'Sem grupo') === group).sort((a, b) => b.points - a.points || b.wins - a.wins || (b.for - b.against) - (a.for - a.against) || a.team.nome.localeCompare(b.team.nome, 'pt-BR'));
     return `<div class="group-block"><h4>Grupo ${escapeHtml(group)}</h4><div class="stats-table-wrap"><table><thead><tr><th>Pos.</th><th>Equipe</th><th>J</th><th>V</th><th>D</th><th>Pts</th><th>Pró</th><th>Contra</th></tr></thead><tbody>${ranking.map((stats, index) => `<tr><td>${index + 1}º</td><th scope="row">${escapeHtml(stats.team.nome)}</th><td>${stats.games}</td><td>${stats.wins}</td><td>${stats.losses}</td><td class="ranking-points">${stats.points}</td><td>${stats.for}</td><td>${stats.against}</td></tr>`).join('')}</tbody></table></div></div>`;
-  }).join('') : '<p class="stats-empty">Cadastre equipes e grupos para ver a classificação.</p>';
+  }).join('') : '<p class="stats-empty">A classificação aparecerá após a confirmação das equipes e dos grupos.</p>';
 
   const athletes = new Map();
   const metricNames = new Set();
@@ -109,19 +116,21 @@ function renderStats(sport) {
 
 function renderTeams(sport) {
   el('team-count').textContent = `${sport.times.length} ${sport.times.length === 1 ? 'equipe' : 'equipes'}`;
-  el('team-list').innerHTML = sport.times.length ? sport.times.map((team) => `<article class="team-card"><div class="team-card-head"><h3>${escapeHtml(team.nome)}</h3><span class="roster-count">${team.jogadores.length} ${team.jogadores.length === 1 ? 'atleta' : 'atletas'}</span></div><ul class="roster-list">${team.jogadores.map((player) => `<li title="${escapeHtml(player.nome)}"><span class="jersey">${player.numero == null ? '—' : `#${escapeHtml(player.numero)}`}</span>${escapeHtml(player.nome)}</li>`).join('')}</ul></article>`).join('') : '<p class="match-empty">Ainda não há equipes nesta modalidade. Adicione os times e jogadores em <strong>data/resultados.json</strong>.</p>';
+  el('team-list').innerHTML = sport.times.length ? sport.times.map((team) => `<article class="team-card"><div class="team-card-head"><h3>${escapeHtml(team.nome)}</h3><span class="roster-count">${team.jogadores.length} ${team.jogadores.length === 1 ? 'atleta' : 'atletas'}</span></div><ul class="roster-list">${team.jogadores.map((player) => `<li title="${escapeHtml(player.nome)}"><span class="jersey">${player.numero == null ? '—' : `#${escapeHtml(player.numero)}`}</span>${escapeHtml(player.nome)}</li>`).join('')}</ul></article>`).join('') : '<p class="match-empty">Os elencos serão publicados quando as equipes forem confirmadas.</p>';
 }
 
 function render() {
   const selectedSport = currentSport();
   if (!selectedSport) return;
   const sport = currentView(selectedSport);
-  document.querySelectorAll('.sport-tab').forEach((button) => { const active = button.dataset.sport === state.sportId; button.classList.toggle('is-active', active); button.setAttribute('aria-selected', String(active)); button.tabIndex = active ? 0 : -1; });
+  document.querySelectorAll('.sport-tab').forEach((button) => { const active = button.dataset.sport === state.sportId; button.classList.toggle('is-active', active); button.setAttribute('aria-pressed', String(active)); });
   el('category-switch').hidden = state.sportId !== 'volei';
   el('basket-category').hidden = state.sportId !== 'basquete';
   document.querySelectorAll('.category-tab').forEach((button) => { const active = button.dataset.category === state.category; button.classList.toggle('is-active', active); button.setAttribute('aria-pressed', String(active)); });
-  el('sport-panel').setAttribute('aria-labelledby', `tab-${state.sportId}`);
-  if (!sport.partidas.some((match) => match.id === state.matchId)) state.matchId = sport.partidas[0]?.id || null;
+  const completed = sport.partidas.filter((match) => match.status === 'encerrada');
+  if (!completed.some((match) => match.id === state.matchId)) state.matchId = completed[0]?.id || null;
+  el('sport-panel').classList.toggle('is-empty', completed.length === 0);
+  renderUpcoming(sport);
   renderMatchList(sport);
   renderMatchDetail(sport);
   renderStats(sport);
@@ -139,7 +148,8 @@ async function loadData() {
     el('update-notice').hidden = false;
     render();
   } catch (error) {
-    el('sport-panel').innerHTML = `<div class="error-panel">Não foi possível carregar os resultados. Confira o arquivo <strong>data/resultados.json</strong> e tente atualizar a página.<br><small>${escapeHtml(error.message)}</small></div>`;
+    el('upcoming-panel').innerHTML = `<div class="error-panel">Não foi possível carregar a programação. Confira o arquivo <strong>data/resultados.json</strong> e tente atualizar a página.<br><small>${escapeHtml(error.message)}</small></div>`;
+    el('sport-panel').innerHTML = '';
     el('team-list').innerHTML = '';
   }
 }
