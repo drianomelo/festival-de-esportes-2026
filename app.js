@@ -1,6 +1,6 @@
 const DATA_URL = './data/resultados.json';
 
-const state = { data: null, sportId: 'volei', category: 'feminino', matchId: null };
+const state = { data: null, sportId: 'volei', category: 'masculino', matchId: null };
 const el = (id) => document.getElementById(id);
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const dateText = (date) => {
@@ -88,9 +88,9 @@ function renderStats(sport) {
     });
     return stats;
   });
-  const groups = [...new Set(teamStats.map((stats) => stats.team.grupo || 'Sem grupo'))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+  const groups = [...new Set(teamStats.map((stats) => stats.team.grupo).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
   el('team-stats').innerHTML = groups.length ? groups.map((group) => {
-    const ranking = teamStats.filter((stats) => (stats.team.grupo || 'Sem grupo') === group).sort((a, b) => b.points - a.points || b.wins - a.wins || (b.for - b.against) - (a.for - a.against) || a.team.nome.localeCompare(b.team.nome, 'pt-BR'));
+    const ranking = teamStats.filter((stats) => stats.team.grupo === group).sort((a, b) => b.points - a.points || b.wins - a.wins || (b.for - b.against) - (a.for - a.against) || a.team.nome.localeCompare(b.team.nome, 'pt-BR'));
     return `<div class="group-block"><h4>Grupo ${escapeHtml(group)}</h4><div class="stats-table-wrap"><table><thead><tr><th>Pos.</th><th>Equipe</th><th>J</th><th>V</th><th>D</th><th>Pts</th><th>Pró</th><th>Contra</th></tr></thead><tbody>${ranking.map((stats, index) => `<tr><td>${index + 1}º</td><th scope="row">${escapeHtml(stats.team.nome)}</th><td>${stats.games}</td><td>${stats.wins}</td><td>${stats.losses}</td><td class="ranking-points">${stats.points}</td><td>${stats.for}</td><td>${stats.against}</td></tr>`).join('')}</tbody></table></div></div>`;
   }).join('') : '<p class="stats-empty">A classificação aparecerá após a confirmação das equipes e dos grupos.</p>';
 
@@ -116,8 +116,8 @@ function renderStats(sport) {
 }
 
 function renderTeams(sport) {
-  el('team-count').textContent = `${sport.times.length} ${sport.times.length === 1 ? 'equipe' : 'equipes'}`;
-  el('team-list').innerHTML = sport.times.length ? sport.times.map((team) => `<article class="team-card"><div class="team-card-head"><h3>${escapeHtml(team.nome)}</h3><span class="roster-count">${team.jogadores.length} ${team.jogadores.length === 1 ? 'atleta' : 'atletas'}</span></div><ul class="roster-list">${team.jogadores.map((player) => `<li title="${escapeHtml(player.nome)}"><span class="jersey">${player.numero == null ? '—' : `#${escapeHtml(player.numero)}`}</span>${escapeHtml(player.nome)}</li>`).join('')}</ul></article>`).join('') : '<p class="match-empty">Os elencos serão publicados quando as equipes forem confirmadas.</p>';
+  el('team-count').textContent = sport.times.length ? `${sport.times.length} ${sport.times.length === 1 ? 'equipe' : 'equipes'}` : 'Equipes a definir';
+  el('team-list').innerHTML = sport.times.length ? sport.times.map((team) => `<article class="team-card"><div class="team-card-head"><h3>${escapeHtml(team.nome)}</h3><span class="roster-count">${team.jogadores.length} ${team.jogadores.length === 1 ? 'atleta' : 'atletas'}</span></div><ul class="roster-list">${team.jogadores.map((player) => `<li title="${escapeHtml(player.nome)}">${player.numero == null ? '' : `<span class="jersey">#${escapeHtml(player.numero)}</span>`}${escapeHtml(player.nome)}</li>`).join('')}</ul></article>`).join('') : `<p class="match-empty">${state.sportId === 'volei' && state.category === 'feminino' ? 'Os elencos femininos' : 'Os elencos'} serão publicados quando as equipes forem confirmadas.</p>`;
 }
 
 function render() {
@@ -155,13 +155,13 @@ async function loadData() {
   }
 }
 
-document.querySelectorAll('.sport-tab').forEach((button) => button.addEventListener('click', () => { state.sportId = button.dataset.sport; state.category = state.sportId === 'basquete' ? 'masculino' : 'feminino'; state.matchId = null; render(); }));
+document.querySelectorAll('.sport-tab').forEach((button) => button.addEventListener('click', () => { state.sportId = button.dataset.sport; state.category = 'masculino'; state.matchId = null; render(); }));
 document.querySelectorAll('.category-tab').forEach((button) => button.addEventListener('click', () => { state.category = button.dataset.category; state.matchId = null; render(); }));
 document.querySelector('.sport-switch').addEventListener('keydown', (event) => {
   if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
   event.preventDefault();
   const next = state.sportId === 'volei' ? 'basquete' : 'volei';
-  state.sportId = next; state.category = next === 'basquete' ? 'masculino' : 'feminino'; state.matchId = null; render(); el(`tab-${next}`).focus();
+  state.sportId = next; state.category = 'masculino'; state.matchId = null; render(); el(`tab-${next}`).focus();
 });
 document.querySelector('.category-switch').addEventListener('keydown', (event) => {
   if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;

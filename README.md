@@ -2,7 +2,7 @@
 
 Site estático para publicar a programação e os resultados de vôlei feminino e masculino e basquete 3x3 masculino. Não usa banco de dados, servidor ou etapa de build.
 
-O campeonato começa em 9 de outubro de 2026. O arquivo de dados foi deixado sem equipes, confrontos ou resultados inventados; a tabela de próximos jogos será preenchida quando a programação real for informada.
+O campeonato começa em 9 de outubro de 2026. Os times de basquete e vôlei masculino já estão cadastrados. O vôlei feminino, os grupos, os confrontos e os resultados aguardam confirmação; a tabela de próximos jogos será preenchida quando a programação real for informada.
 
 ## Publicar na Vercel
 
@@ -14,10 +14,10 @@ Para testar no computador, sirva a pasta com um servidor local, por exemplo `pyt
 
 ## Atualizar os dados
 
-Edite [data/resultados.json](data/resultados.json). Adicione as equipes, os atletas e os confrontos confirmados. Atualize também `atualizadoEm` com data, hora e fuso, por exemplo `"2026-10-09T13:24:00-03:00"`. Esse campo aparece no aviso de atualização do site. O arquivo `logo.png` da raiz é usado no cabeçalho e como ícone da aba.
+Edite [data/resultados.json](data/resultados.json). Adicione os times femininos, os grupos e os confrontos quando forem confirmados. Atualize também `atualizadoEm` com data, hora e fuso, por exemplo `"2026-10-09T13:31:00-03:00"`. Esse campo aparece no aviso de atualização do site. O arquivo `logo.png` da raiz é usado no cabeçalho e como ícone da aba.
 
 - Cada modalidade fica em `esportes`. Use `id: "volei"` ou `id: "basquete"`.
-- Em `times`, cada equipe precisa de um `id` único, `nome`, `categoria` (`"feminino"` ou `"masculino"`), `grupo` (por exemplo, `"A"`) e uma lista `jogadores`. Cada atleta precisa de `id` único e `nome`; `numero` é opcional.
+- Em `times`, cada equipe precisa de um `id` único, `nome`, `categoria` (`"feminino"` ou `"masculino"`) e uma lista `jogadores`. O campo `grupo` (por exemplo, `"A"`) pode ser adicionado quando os grupos forem definidos; ele será obrigatório para jogos da fase de grupos. Cada atleta precisa de `id` único e `nome`; `numero` é opcional.
 - Em `partidas`, use IDs de equipe em `mandante` e `visitante` e a mesma `categoria` das duas equipes. `status` é `"agendada"` ou `"encerrada"`. Jogos agendados aparecem na tabela **Próximos jogos**; os encerrados aparecem em **Resultados**. Use `fase: "grupos"` para jogos que contam na classificação ou `fase: "eliminatoria"` para os demais.
 - Em cada partida de grupos encerrada, `pontosClassificacao` define os pontos que cada equipe recebe na tabela, por exemplo `{"mandante": 3, "visitante": 0}`. Assim, você pode usar a regra oficial do festival sem alterar o site. A ordem da classificação é por pontos, depois vitórias e saldo de pontos marcados.
 - `periodos` guarda os pontos de cada set no vôlei. No basquete 3x3, use apenas uma entrada para o jogo até 21 pontos. O site calcula o placar final: sets vencidos no vôlei e pontos do jogo no basquete.
@@ -26,19 +26,19 @@ Edite [data/resultados.json](data/resultados.json). Adicione as equipes, os atle
 - A seção **Estatísticas → Equipes** mostra a classificação de cada grupo: jogos, vitórias, derrotas, pontos da classificação, pontos marcados e sofridos. Só as partidas de grupos encerradas contam na tabela.
 - A seção **Estatísticas → Atletas** soma os pontos registrados em todas as partidas encerradas da modalidade e categoria, inclusive eliminatórias, e mostra jogos com registro, média e melhor jogo.
 
-Exemplo de uma partida agendada:
+Exemplo do formato de uma partida agendada (não é um confronto confirmado):
 
 ```json
 {
   "id": "v-001",
-  "categoria": "feminino",
-  "fase": "grupos",
+  "categoria": "masculino",
+  "fase": "eliminatoria",
   "data": "2026-10-10",
   "horario": "15:00",
   "local": "Ginásio Municipal",
   "status": "agendada",
-  "mandante": "v-azul",
-  "visitante": "v-verde",
+  "mandante": "v-lonney-tunes",
+  "visitante": "v-sand-volei",
   "periodos": [],
   "pontosAtletas": []
 }
@@ -46,4 +46,4 @@ Exemplo de uma partida agendada:
 
 Depois do jogo, mude o status para `"encerrada"` e preencha `periodos`, `pontosAtletas` e, se for jogo de grupos, `pontosClassificacao`. Confira se o JSON continua válido antes de publicar. No basquete 3x3, a soma dos pontos dos atletas normalmente deve bater com o total da equipe. No vôlei, pode diferir por pontos gerados por erros do adversário.
 
-Para conferir o arquivo antes de publicar, execute `node scripts/validar-dados.mjs` na pasta do projeto. O script aponta erros de JSON, IDs, categorias e placares. `node scripts/verificar-interface.mjs` verifica os estados vazios e a tabela de próximos jogos com dados de teste que não são publicados.
+Para conferir o arquivo antes de publicar, execute `node scripts/validar-dados.mjs` na pasta do projeto. O script aponta erros de JSON, IDs, categorias e placares. `node scripts/verificar-interface.mjs` verifica os elencos, os estados vazios e a tabela de próximos jogos com dados de teste que não são publicados.

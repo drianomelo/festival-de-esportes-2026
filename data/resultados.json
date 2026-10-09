@@ -1,18 +1,129 @@
 {
   "edicao": "2026",
   "cidade": "Nossa Senhora da Glória, SE",
-  "atualizadoEm": "2026-10-09T13:24:00-03:00",
+  "atualizadoEm": "2026-10-09T13:31:00-03:00",
   "esportes": [
     {
       "id": "volei",
       "nome": "Vôlei",
-      "times": [],
+      "times": [
+        {
+          "id": "v-lonney-tunes",
+          "categoria": "masculino",
+          "nome": "Lonney Tunes",
+          "jogadores": [
+            { "id": "v-lonney-1", "nome": "Thiago" },
+            { "id": "v-lonney-2", "nome": "Roberto Carlos" },
+            { "id": "v-lonney-3", "nome": "Lobo" },
+            { "id": "v-lonney-4", "nome": "Pato" },
+            { "id": "v-lonney-5", "nome": "Jhon" }
+          ]
+        },
+        {
+          "id": "v-sand-volei",
+          "categoria": "masculino",
+          "nome": "Sand Volei",
+          "jogadores": [
+            { "id": "v-sand-1", "nome": "Roberto Teles" },
+            { "id": "v-sand-2", "nome": "Kaick" },
+            { "id": "v-sand-3", "nome": "Pescoço" },
+            { "id": "v-sand-4", "nome": "Kauan" },
+            { "id": "v-sand-5", "nome": "Rômulo" },
+            { "id": "v-sand-6", "nome": "João Lucas" }
+          ]
+        },
+        {
+          "id": "v-wendell",
+          "categoria": "masculino",
+          "nome": "Time de Wendell",
+          "jogadores": [
+            { "id": "v-wendell-1", "nome": "Tico" },
+            { "id": "v-wendell-2", "nome": "Matheus" },
+            { "id": "v-wendell-3", "nome": "João" },
+            { "id": "v-wendell-4", "nome": "Anderson" },
+            { "id": "v-wendell-5", "nome": "Gabriel" },
+            { "id": "v-wendell-6", "nome": "Wendell" }
+          ]
+        },
+        {
+          "id": "v-carcara-gloria",
+          "categoria": "masculino",
+          "nome": "Carcará Glória",
+          "jogadores": [
+            { "id": "v-carcara-1", "nome": "Adriano" },
+            { "id": "v-carcara-2", "nome": "Adriel" },
+            { "id": "v-carcara-3", "nome": "Vyctor" },
+            { "id": "v-carcara-4", "nome": "Vitor" }
+          ]
+        }
+      ],
       "partidas": []
     },
     {
       "id": "basquete",
       "nome": "Basquete 3x3",
-      "times": [],
+      "times": [
+        {
+          "id": "b-guilherme",
+          "categoria": "masculino",
+          "nome": "Time Guilherme",
+          "jogadores": [
+            { "id": "b-guilherme-1", "nome": "Guilherme" },
+            { "id": "b-guilherme-2", "nome": "Antônio" },
+            { "id": "b-guilherme-3", "nome": "Raikkonen" }
+          ]
+        },
+        {
+          "id": "b-kaun",
+          "categoria": "masculino",
+          "nome": "Time Kaun",
+          "jogadores": [
+            { "id": "b-kaun-1", "nome": "Kauan" },
+            { "id": "b-kaun-2", "nome": "Juan" },
+            { "id": "b-kaun-3", "nome": "davidzão" }
+          ]
+        },
+        {
+          "id": "b-charlys",
+          "categoria": "masculino",
+          "nome": "Time Charlys",
+          "jogadores": [
+            { "id": "b-charlys-1", "nome": "Charlys" },
+            { "id": "b-charlys-2", "nome": "Fafá" },
+            { "id": "b-charlys-3", "nome": "caio" }
+          ]
+        },
+        {
+          "id": "b-luiz",
+          "categoria": "masculino",
+          "nome": "Time Luiz",
+          "jogadores": [
+            { "id": "b-luiz-1", "nome": "Luiz" },
+            { "id": "b-luiz-2", "nome": "Fran" },
+            { "id": "b-luiz-3", "nome": "Kauan Gilton" }
+          ]
+        },
+        {
+          "id": "b-adriano",
+          "categoria": "masculino",
+          "nome": "Time Adriano",
+          "jogadores": [
+            { "id": "b-adriano-1", "nome": "Vyctor" },
+            { "id": "b-adriano-2", "nome": "Adriel" },
+            { "id": "b-adriano-3", "nome": "Adriano" }
+          ]
+        },
+        {
+          "id": "b-izael",
+          "categoria": "masculino",
+          "nome": "Time Izael",
+          "jogadores": [
+            { "id": "b-izael-1", "nome": "Izael" },
+            { "id": "b-izael-2", "nome": "David" },
+            { "id": "b-izael-3", "nome": "Deyvide" }
+          ]
+        }
+      ],
       "partidas": []
     }
   ]

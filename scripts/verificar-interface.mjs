@@ -34,8 +34,14 @@ await new Promise((resolve) => setImmediate(resolve));
 const assert = (condition, message) => { if (!condition) throw new Error(message); };
 assert(byId('upcoming-panel').innerHTML.includes('Programação em breve'), 'Estado inicial dos próximos jogos não apareceu.');
 assert(byId('match-list').innerHTML.includes('Ainda não há resultados'), 'Estado inicial dos resultados não apareceu.');
-assert(byId('update-notice').textContent.includes('9 de outubro de 2026 às 13:24'), 'Aviso de atualização não apareceu.');
-assert(data.esportes.every((sport) => sport.times.length === 0 && sport.partidas.length === 0), 'O JSON publicado ainda contém dados de exemplo.');
+assert(byId('update-notice').textContent.includes('9 de outubro de 2026 às 13:31'), 'Aviso de atualização não apareceu.');
+assert(data.esportes.every((sport) => sport.partidas.length === 0), 'O JSON publicado contém partidas não confirmadas.');
+assert(byId('team-list').innerHTML.includes('Lonney Tunes') && byId('team-list').innerHTML.includes('Carcará Glória'), 'Os times do vôlei masculino não apareceram.');
+vm.runInContext("state.category = 'feminino'; render()", context);
+assert(byId('team-list').innerHTML.includes('elencos femininos'), 'O aviso genérico do vôlei feminino não apareceu.');
+vm.runInContext("state.sportId = 'basquete'; state.category = 'masculino'; render()", context);
+assert(byId('team-list').innerHTML.includes('Time Guilherme') && byId('team-list').innerHTML.includes('Time Izael'), 'Os times do basquete não apareceram.');
+vm.runInContext("state.sportId = 'volei'; state.category = 'feminino'; render()", context);
 
 const volley = data.esportes.find((sport) => sport.id === 'volei');
 volley.times.push(
@@ -56,4 +62,4 @@ assert(byId('athlete-stats').innerHTML.includes('Atleta Azul'), 'Pontuação ind
 vm.runInContext("state.sportId = 'basquete'; state.category = 'masculino'; state.matchId = null; render()", context);
 assert(byId('upcoming-panel').innerHTML.includes('Programação em breve'), 'Estado vazio do basquete não apareceu.');
 
-console.log('Estados vazios, próximos jogos e resultados conferidos.');
+console.log('Elencos, estados vazios, próximos jogos e resultados conferidos.');
