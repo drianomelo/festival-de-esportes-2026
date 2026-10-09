@@ -27,12 +27,13 @@ const scoreHtml = (result) => result ? `${result[0]}<span>:</span>${result[1]}` 
 
 function renderUpcoming(sport) {
   const fixtures = sport.partidas.filter((match) => match.status === 'agendada').sort((a, b) => `${a.data || ''} ${a.horario || ''}`.localeCompare(`${b.data || ''} ${b.horario || ''}`));
-  el('upcoming-panel').innerHTML = fixtures.length ? `<div class="upcoming-table-wrap"><table class="upcoming-table" aria-label="Próximos jogos da modalidade selecionada"><thead><tr><th scope="col">Data</th><th scope="col">Horário</th><th scope="col">Confronto</th><th scope="col">Fase</th><th scope="col">Local</th></tr></thead><tbody>${fixtures.map((match) => {
+  const rows = fixtures.map((match) => {
     const home = teamById(sport, match.mandante);
     const away = teamById(sport, match.visitante);
     const phase = match.fase === 'eliminatoria' ? 'Eliminatória' : `Grupo ${home?.grupo || away?.grupo || 'a definir'}`;
     return `<tr><td>${escapeHtml(dateText(match.data))}</td><td>${escapeHtml(match.horario || 'A definir')}</td><th scope="row">${escapeHtml(home?.nome || 'Equipe a definir')} <span class="fixture-versus">×</span> ${escapeHtml(away?.nome || 'Equipe a definir')}</th><td>${escapeHtml(phase)}</td><td>${escapeHtml(match.local || 'A definir')}</td></tr>`;
-  }).join('')}</tbody></table></div>` : '<div class="upcoming-empty"><strong>Programação em breve.</strong><p>Os próximos confrontos aparecerão aqui assim que forem definidos.</p></div>';
+  }).join('');
+  el('upcoming-panel').innerHTML = `<div class="upcoming-table-wrap"><table class="upcoming-table" aria-label="Próximos jogos da modalidade selecionada"><thead><tr><th scope="col">Data</th><th scope="col">Horário</th><th scope="col">Confronto</th><th scope="col">Fase</th><th scope="col">Local</th></tr></thead><tbody>${rows || '<tr><td class="empty-cell" colspan="5"><div class="upcoming-empty"><strong>Programação em breve.</strong><p>Os próximos confrontos aparecerão aqui assim que forem definidos.</p></div></td></tr>'}</tbody></table></div>`;
 }
 
 function renderMatchList(sport) {
